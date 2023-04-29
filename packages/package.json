@@ -1,0 +1,36 @@
+{
+  "name": "@widget-js/monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "packageManager": "pnpm@7.6.0",
+  "repository": "git@gitee.com:wisdom_ltd/widgets.git",
+  "author": "Neo Fu <rtugeek@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "graph": " npx nx graph"
+  },
+  "devDependencies": {
+    "consola": "^2.15.3"
+  },
+  "dependencies": {
+    "typescript": "^4.9.5",
+    "@esbuild/android-arm": "^0.17.18"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "react",
+        "react-dom",
+        "rollup"
+      ]
+    },
+    "neverBuiltDependencies": [
+      "electron"
+    ],
+    "overrides": {
+      "typescript": "^4.9.3",
+      "vite": "^4.1.1"
+    }
+  }
+}

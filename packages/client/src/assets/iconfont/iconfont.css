@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3789607 */
+  src: url('iconfont.woff2?t=1669256316653') format('woff2'),
+       url('iconfont.woff?t=1669256316653') format('woff'),
+       url('iconfont.ttf?t=1669256316653') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-phone-hangup:before {
+  content: "\e96c";
+}
+
+.icon-phone-call:before {
+  content: "\e681";
+}
+

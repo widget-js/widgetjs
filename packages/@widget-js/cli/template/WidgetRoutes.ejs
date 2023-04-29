@@ -1,0 +1,29 @@
+import <%= name %>WidgetDefine from "./<%= name %>.widget";
+
+const url = <%= name %>WidgetDefine.getIndexRoute().url;
+const name = <%= name %>WidgetDefine.name;
+<% if (configurable) { %>
+const configUrl = <%= name %>WidgetDefine.getConfigRoute()!.url;
+
+const <%= name %>WidgetRoutes = [
+    {
+        path: url,
+        name: `${name}`,
+        component: () => import(/* webpackChunkName: "<%= packageName %>" */ './<%= name %>WidgetView.vue')
+    },
+    {
+        path: configUrl,
+        name: `${name}.config`,
+        component: () => import(/* webpackChunkName: "<%= packageName %>.config" */ './<%= name %>ConfigView.vue')
+    }
+]
+<% } else { %>
+const <%= name %>WidgetRoutes = [
+    {
+        path: url,
+        name: `${name}`,
+        component: () => import(/* webpackChunkName: "<%= packageName %>" */ './<%= name %>WidgetView.vue')
+    }
+]
+<% }  %>
+export default <%= name %>WidgetRoutes;

@@ -1,0 +1,15 @@
+import <%= name %>Widget from './<%= name %>Widget.vue';
+
+export default {
+  title: 'Widget/<%= name %>',
+  component: <%= name %>Widget,
+  argTypes: {},
+};
+
+export const Widget = (args:any) => ({
+  components: {<%= name %>Widget},
+  setup() {
+    return {args};
+  },
+  template: '<<%= paramCaseName %>-widget></<%= paramCaseName %>-widget>',
+});

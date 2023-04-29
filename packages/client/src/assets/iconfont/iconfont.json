@@ -1,0 +1,23 @@
+{
+  "id": "3789607",
+  "name": "桌面图标",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1478787",
+      "name": "ic_call_end",
+      "font_class": "phone-hangup",
+      "unicode": "e96c",
+      "unicode_decimal": 59756
+    },
+    {
+      "icon_id": "11679226",
+      "name": "ic_call_24px",
+      "font_class": "phone-call",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    }
+  ]
+}
