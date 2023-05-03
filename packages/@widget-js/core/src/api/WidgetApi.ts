@@ -44,7 +44,7 @@ interface IWidgetApi {
 type WidgetApiMethods = keyof IWidgetApi;
 
 enum WidgetApiEvent {
-  DATA_CHANGED = "event::cn.widgetjs.core.widget.data.changed",
+  DATA_CHANGED = "event::cn.widgetjs.core.widget.data0changed",
   EDIT_DESKTOP_WIDGETS = "event::cn.widgetjs.core.widget.desktop.edit",
 }
 
@@ -55,15 +55,15 @@ class WidgetApiImpl extends BaseApi<WidgetApiMethods> implements IWidgetApi {
   }
 
   async registerWidgets(widgets: Widget[]) {
-    return this.invoke("registerWidgets", JSON.stringify(widgets));
+    return this.invokeMethod("registerWidgets", JSON.stringify(widgets));
   }
 
   async registerWidgetPackage(widgetPackage: WidgetPackage) {
-    return this.invoke("registerWidgetPackage", JSON.stringify(widgetPackage));
+    return this.invokeMethod("registerWidgetPackage", JSON.stringify(widgetPackage));
   }
 
   async getWidgets(): Promise<Widget[]> {
-    const data = await this.invoke('getWidgets');
+    const data = await this.invokeMethod('getWidgets');
     const widgets: Widget[] = [];
     if (data) {
       for (const item of data) {
@@ -74,7 +74,7 @@ class WidgetApiImpl extends BaseApi<WidgetApiMethods> implements IWidgetApi {
   }
 
   async getWidgetPackages(): Promise<WidgetPackage[]> {
-    return await this.invoke('getWidgetPackages');
+    return await this.invokeMethod('getWidgetPackages');
   }
 
   /**
@@ -82,7 +82,7 @@ class WidgetApiImpl extends BaseApi<WidgetApiMethods> implements IWidgetApi {
    * @param name package name
    */
   async getWidget(name: string): Promise<Widget> {
-    return Widget.parseObject(await this.invoke('getWidget', name));
+    return Widget.parseObject(await this.invokeMethod('getWidget', name));
   }
 
   /**
@@ -90,7 +90,7 @@ class WidgetApiImpl extends BaseApi<WidgetApiMethods> implements IWidgetApi {
    * @param name package name
    */
   async getWidgetPackage(name: string): Promise<WidgetPackage> {
-    return WidgetPackage.parseObject(await this.invoke('getWidgetPackage', name));
+    return WidgetPackage.parseObject(await this.invokeMethod('getWidgetPackage', name));
   }
 
 
@@ -168,7 +168,7 @@ class WidgetApiImpl extends BaseApi<WidgetApiMethods> implements IWidgetApi {
   }
 
   addWidget(widgetName: string, hostMode: HostedMode): Promise<Widget[]> {
-    return this.invoke('addWidget', widgetName, hostMode);
+    return this.invokeMethod('addWidget', widgetName, hostMode);
   }
 }
 

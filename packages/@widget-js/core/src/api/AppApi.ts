@@ -28,11 +28,11 @@ class AppApiImpl extends BaseApi<AppApiMethods> implements IAppApi {
   }
 
   async setConfig(key: string, value: string | number | boolean) {
-    return await this.invoke('setConfig', key, value);
+    return await this.invokeMethod('setConfig', key, value);
   }
 
   async getConfig(key: string, defaultValue: string | number | boolean): Promise<string | number | boolean> {
-    const value = await this.invoke("getConfig", key);
+    const value = await this.invokeMethod("getConfig", key);
     if (value === null || value === undefined) {
       return defaultValue;
     }
@@ -47,22 +47,22 @@ class AppApiImpl extends BaseApi<AppApiMethods> implements IAppApi {
   }
 
   async openAddWidgetWindow() {
-    return this.invoke('openAddWidgetWindow');
+    return this.invokeMethod('openAddWidgetWindow');
   }
 
   /**
    * 获取应用版本号，格式为 x.y.z
    */
   async getVersion(): Promise<string> {
-    return this.invoke('getVersion');
+    return this.invokeMethod('getVersion');
   }
 
   async getPreloadPath(): Promise<string> {
-    return this.invoke('getPreloadPath');
+    return this.invokeMethod('getPreloadPath');
   }
 
   async openSettingWindow() {
-    return this.invoke('openSettingWindow');
+    return this.invokeMethod('openSettingWindow');
   }
 }
 

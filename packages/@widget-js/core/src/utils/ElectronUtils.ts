@@ -18,7 +18,11 @@ export class ElectronUtils {
     return null
   }
 
-  static async invoke(channel: string, method: string, ...args: any[]): Promise<any> {
+  static async invokeMethod(channel: string, method: string, ...args: any[]): Promise<any> {
     return this.getAPI()?.invoke(channel, method, ...args);
+  }
+
+  static async invoke(channel: string, ...args: any[]): Promise<any> {
+    return this.getAPI()?.invoke(channel, ...args);
   }
 }

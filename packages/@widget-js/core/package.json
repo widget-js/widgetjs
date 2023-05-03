@@ -19,6 +19,7 @@
     "build:esm": "node tools/cleanup esm && tsc -p config/tsconfig.esm.json",
     "build:umd": "node tools/cleanup umd && webpack --config config/webpack.config.js",
     "build:types": "node tools/cleanup types && tsc -p config/tsconfig.types.json",
+    "postbuild": "rimraf ../../electron/node_modules/@widget-js/core/",
     "package": "npm run build && npm pack",
     "addscope": "node tools/packagejson name @widget-js/core"
   },

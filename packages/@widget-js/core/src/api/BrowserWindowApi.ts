@@ -2,78 +2,105 @@ import {Channel} from "./Channel";
 import {ElectronUtils} from "../utils/ElectronUtils";
 import {Rectangle} from "../model/interface/Rectangle";
 import {Position} from "../model/msic/graphics";
+import {BaseApi} from "./BaseApi";
 
-export class BrowserWindowApi {
+interface IBrowserWindowApi {
+  setIgnoreMouseEvent(ignore: boolean): Promise<void>;
 
-  static readonly IGNORE_MOUSE_EVENT = "ignore-mouse-event"
-  static readonly WINDOW_VISIBILITY = "window-visibility"
-  static readonly CENTER = "center"
-  static readonly ALWAYS_ON_TOP = "always-on-top"
-  static readonly IS_ALWAYS_ON_TOP = "is-always-on-top"
-  static readonly OPEN_URL = "open-url"
-  static readonly MOVE_TOP = "move-top"
-  static readonly OPEN_DEV_TOOLS = "open-dev-tools"
-  static readonly SET_POSITION = "set-position"
-  static readonly GET_POSITION = "get-position"
-  static readonly BLUR = "blur"
-  static readonly FOCUS = "focus"
-  static readonly SET_RESIZABLE = "set-resizable"
-  static readonly GET_BOUNDS = "get-bounds"
-  static readonly SET_BOUNDS = "set-bounds"
-  static readonly ALIGN_TO_SCREEN = "align-to-screen"
-  static readonly START_DRAGGING_WINDOW = "start-dragging-window"
-  static readonly STOP_DRAGGING_WINDOW = "stop-dragging-window"
-  static readonly EXISTS_BY_URL = "exists-by-url"
-  static readonly SHOW_INACTIVE = "show-inactive"
-  static readonly SHOW = "show"
+  show(): Promise<void>;
 
-  static async setIgnoreMouseEvent(ignore: boolean) {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.IGNORE_MOUSE_EVENT, ignore);
+  hide(): Promise<void>;
+
+  showInactive(): Promise<void>;
+
+  center(): Promise<void>;
+
+  startDraggingWindow(): Promise<void>;
+
+  stopDraggingWindow(): Promise<void>;
+
+  setAlwaysOnTop(alwaysOnTop: boolean): Promise<void>;
+
+  isAlwaysOnTop(): Promise<boolean>;
+
+  openUrl(url: string): Promise<void>;
+
+  moveTop(): Promise<void>;
+
+  openDevTools(): Promise<void>;
+
+  setPosition(x: number, y: number, animation: boolean): Promise<void>;
+
+  getPosition(): Promise<Position>;
+
+  blur(): Promise<void>;
+
+  focus(): Promise<void>;
+
+  setResizable(resizable: boolean): Promise<void>;
+
+  getBounds(): Promise<Rectangle>;
+
+  setBounds(bounds: Partial<Rectangle>, animate: boolean): Promise<void>;
+
+  alignToScreen(align: AlignPosition): Promise<void>;
+
+  existsByUrl(url: string): Promise<boolean>;
+}
+
+type BrowserWindowApiMethods = keyof IBrowserWindowApi;
+type AlignPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+
+enum BrowserWindowApiEvent {
+  BLUR = "event::cn.widgetjs.core.browser-window.blur",
+  FOCUS = "event::cn.widgetjs.core.browser-window.focus",
+}
+
+export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> implements IBrowserWindowApi {
+
+  getChannel(): string {
+    return Channel.BROWSER_WINDOW
   }
 
-  static async show() {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.WINDOW_VISIBILITY, true);
+  async setIgnoreMouseEvent(ignore: boolean) {
+    await this.invokeMethod('setIgnoreMouseEvent', ignore);
   }
 
-  static async showInactive() {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.SHOW_INACTIVE, true);
+  async show() {
+    await this.invokeMethod('show', true);
   }
 
-  static async hide() {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.WINDOW_VISIBILITY, false);
+  async showInactive() {
+    await this.invokeMethod('showInactive', true);
   }
 
-  static async center() {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.CENTER, false);
+  async hide() {
+    await this.invokeMethod('hide', false);
   }
 
-  /**
-   * @deprecated
-   * @param show
-   */
-  static async setWindowVisibility(show: boolean) {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.WINDOW_VISIBILITY, show);
+  async center() {
+    await this.invokeMethod('center', false);
   }
 
-  static async setAlwaysOnTop(alwaysOnTop: boolean) {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.ALWAYS_ON_TOP, alwaysOnTop);
+  async setAlwaysOnTop(alwaysOnTop: boolean) {
+    await this.invokeMethod('setAlwaysOnTop', alwaysOnTop);
   }
 
-  static async isAlwaysOnTop(): Promise<boolean> {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.IS_ALWAYS_ON_TOP);
+  async isAlwaysOnTop(): Promise<boolean> {
+    return await this.invokeMethod('isAlwaysOnTop');
   }
 
-  static async openUrl(url: string) {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.OPEN_URL, url);
+  async openUrl(url: string) {
+    await this.invokeMethod('openUrl', url);
   }
 
 
-  static async moveTop() {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.MOVE_TOP);
+  async moveTop() {
+    await this.invokeMethod('moveTop');
   }
 
-  static async openDevTools() {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.OPEN_DEV_TOOLS);
+  async openDevTools() {
+    await this.invokeMethod('openDevTools');
   }
 
   /**
@@ -82,60 +109,63 @@ export class BrowserWindowApi {
    * @param y
    * @param animation 动画只在mac系统有效
    */
-  static async setPosition(x: number, y: number, animation: boolean) {
-    await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.SET_POSITION, x, y, animation);
+  async setPosition(x: number, y: number, animation: boolean) {
+    await this.invokeMethod('setPosition', x, y, animation);
   }
 
-  static async getPosition(): Promise<Position> {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.GET_POSITION);
+  async getPosition(): Promise<Position> {
+    return await this.invokeMethod('getPosition');
   }
 
 
-  static async blur() {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.BLUR);
+  async blur() {
+    return await this.invokeMethod('blur');
   }
 
-  static async focus() {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.FOCUS);
+  async focus() {
+    return await this.invokeMethod('focus');
   }
 
   /**
    * 设置窗口是否可以拉伸
    * @param resizable
    */
-  static async setResizable(resizable: boolean) {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.SET_RESIZABLE, resizable);
+  async setResizable(resizable: boolean) {
+    return await this.invokeMethod('setResizable', resizable);
   }
 
 
-  static async getBounds(): Promise<Rectangle> {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.GET_BOUNDS);
+  async getBounds(): Promise<Rectangle> {
+    return await this.invokeMethod('getBounds');
   }
 
-  static async setBounds(bounds: Partial<Rectangle>, animate?: boolean): Promise<Rectangle> {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.SET_BOUNDS, bounds, animate);
+  async setBounds(bounds: Partial<Rectangle>, animate?: boolean): Promise<void> {
+    return await this.invokeMethod("setBounds", bounds, animate);
   }
 
 
-  static async alignToScreen(align: "top" | "bottom") {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.ALIGN_TO_SCREEN, align);
+  async alignToScreen(align: AlignPosition) {
+    return await this.invokeMethod('alignToScreen', align);
   }
 
-  static async startDraggingWindow() {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.START_DRAGGING_WINDOW);
+  async startDraggingWindow() {
+    return await this.invokeMethod('startDraggingWindow');
   }
 
-  static async stopDraggingWindow() {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.STOP_DRAGGING_WINDOW);
+  async stopDraggingWindow() {
+    return await this.invokeMethod('stopDraggingWindow');
   }
 
   /**
    * 通过url检测窗口是否存在
    * @param url
    */
-  static async existsByUrl(url: string): Promise<boolean> {
-    return await ElectronUtils.invoke(Channel.BROWSER_WINDOW, this.EXISTS_BY_URL, url);
+  async existsByUrl(url: string): Promise<boolean> {
+    return await this.invokeMethod('existsByUrl', url);
   }
 
 }
+
+const BrowserWindowApi = new BrowserWindowApiImpl();
+export {BrowserWindowApi, BrowserWindowApiMethods, BrowserWindowApiEvent}
 

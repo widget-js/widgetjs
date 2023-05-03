@@ -15,14 +15,14 @@ export class DeviceApiImpl extends BaseApi<DeviceApiMethods> implements IDeviceA
    * 获取当前鼠标位置
    */
   async getCursorScreenPoint(): Promise<Point> {
-    return this.invoke('getCursorScreenPoint');
+    return this.invokeMethod('getCursorScreenPoint');
   }
 
   /**
    * 判断是否所有按键都已经释放
    */
   async isAllKeyReleased(): Promise<boolean> {
-    return this.invoke('isAllKeyReleased');
+    return this.invokeMethod('isAllKeyReleased');
   }
 
   getChannel(): string {

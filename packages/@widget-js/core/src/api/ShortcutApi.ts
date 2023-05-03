@@ -19,11 +19,11 @@ class ShortcutApiImpl extends BaseApi<ShortcutApiMethods> implements IShortcutAp
   }
 
   async register(shortcut: string) {
-    return await this.invoke('register', shortcut);
+    return await this.invokeMethod('register', shortcut);
   }
 
   async unregister(shortcut: string) {
-    return await this.invoke('unregister', shortcut);
+    return await this.invokeMethod('unregister', shortcut);
   }
 
 }

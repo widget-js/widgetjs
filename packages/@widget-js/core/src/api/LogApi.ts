@@ -1,24 +1,41 @@
-import {ElectronUtils} from '../utils/ElectronUtils'
 import {Channel} from "./Channel";
+import {BaseApi} from "./BaseApi";
 
-export class LogApi {
-  static info(name: string, ...data: any[]) {
+interface ILogApi {
+  info: (...data: any[]) => void;
+  error: (...data: any[]) => void;
+  warn: (...data: any[]) => void;
+  log: (...data: any[]) => void;
+}
+
+type LogApiMethods = keyof ILogApi;
+
+class LogApiImpl extends BaseApi<LogApiMethods> implements ILogApi {
+
+  getChannel(): string {
+    return Channel.LOG
+  }
+
+  info(...data: any[]) {
     console.info(...data)
-    ElectronUtils.invoke(Channel.LOG , name, 'info', ...data)
+    this.invokeMethod('info', ...data)
   }
 
-  static error(name: string, ...data: any[]) {
+  error(...data: any[]) {
     console.error(...data)
-    ElectronUtils.invoke(Channel.LOG, name, 'error', ...data)
+    this.invokeMethod('error', ...data)
   }
 
-  static warn(name: string, ...data: any[]) {
+  warn(...data: any[]) {
     console.warn(...data)
-    ElectronUtils.invoke(Channel.LOG, name, 'warn', ...data)
+    this.invokeMethod('warn', ...data)
   }
 
-  static log(name: string, ...data: any[]) {
+  log(...data: any[]) {
     console.log(...data)
-    ElectronUtils.invoke(Channel.LOG, name, 'log', ...data)
+    this.invokeMethod('log', ...data)
   }
 }
+
+const LogApi: ILogApi = new LogApiImpl();
+export {LogApi, LogApiMethods}

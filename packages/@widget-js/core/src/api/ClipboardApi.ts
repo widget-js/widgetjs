@@ -10,16 +10,18 @@ interface IClipboardApi {
 
 type ClipboardApiMethods = keyof IClipboardApi;
 
-type ClipboardApiEvent = 'clipboard-changed';
+enum ClipboardApiEvent {
+  CHANGED = 'clipboard-changed'
+}
 
 class ClipboardApiImpl extends BaseApi<ClipboardApiMethods> implements IClipboardApi {
 
   async getSelectedText(): Promise<string | undefined> {
-    return this.invoke('getSelectedText');
+    return this.invokeMethod('getSelectedText');
   }
 
   async getText(): Promise<string | undefined> {
-    return this.invoke('getText');
+    return this.invokeMethod('getText');
   }
 
   getChannel(): string {

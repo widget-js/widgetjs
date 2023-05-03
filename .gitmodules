@@ -7,7 +7,3 @@
 [submodule "packages/@widget-js/chatgpt"]
 	path = packages/@widget-js/chatgpt
 	url = https://github.com/widget-js/chatgpt.git
-[submodule "packages/electron"]
-    path = packages/electron
-    url = git@gitee.com:rtugeek/electron.git
-

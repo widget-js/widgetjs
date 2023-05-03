@@ -18,7 +18,7 @@ class DialogApiImpl extends BaseApi<DialogApiMethods> implements IDialogApi {
    * @param extensions 允许的文件后缀格式，如：["txt","docx","gif"]
    */
   pickFile(extensions: string[] | undefined): Promise<string | undefined> {
-    return this.invoke('pickFile', extensions);
+    return this.invokeMethod('pickFile', extensions);
   }
 
 }
