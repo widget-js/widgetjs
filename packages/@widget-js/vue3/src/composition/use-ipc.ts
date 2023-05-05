@@ -5,7 +5,7 @@ export function useIpcListener(channel: Channel, callback: (...args) => void) {
 
     onMounted(async () => {
         await ElectronApi.addIpcListener(channel, (...args) => {
-            callback(args);
+            callback(...args);
         });
     });
     onUnmounted(async () => {
@@ -35,7 +35,6 @@ export function useMouseEventHook(callback: (event: AppMouseEvent) => void) {
         await ElectronApi.removeIpcListener(Channel.MOUSE);
     });
 }
-
 
 export function useKeyboardEventHook(callback: (event: NativeKeyboardEvent) => void) {
     onMounted(async () => {

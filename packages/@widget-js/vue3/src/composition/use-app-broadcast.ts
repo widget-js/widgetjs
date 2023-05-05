@@ -16,7 +16,7 @@ export function useAppBroadcast(events: BroadcastEventType[], callback: (event: 
         BroadcastApi.unregister(...events);
     })
 
-    useIpcListener(Channel.BROADCAST, (event: BroadcastEvent) => {
-        callback(event);
+    useIpcListener(Channel.BROADCAST, (...args: any[]) => {
+        callback(args[0] as BroadcastEvent);
     })
 }
