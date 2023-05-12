@@ -101,10 +101,10 @@ export default {
       HostedWidgetApi.openDevTools(this.widget.name);
     },
     async addOverlapWidget() {
-      await ElectronUtils.getAPI().invoke(Channel.WIDGET, "add-widget", this.widget.name, HostedMode.OVERLAP);
+      await HostedWidgetApi.addWidget(this.widget.name, HostedMode.OVERLAP);
     },
     async addBackgroundWidget() {
-      await ElectronUtils.getAPI().invoke(Channel.WIDGET, "add-widget", this.widget.name, HostedMode.BACKGROUND);
+      await HostedWidgetApi.addWidget(this.widget.name, HostedMode.BACKGROUND);
       await this.updateWidgetAdd();
     },
     async openBackgroundWidgetSettings() {
@@ -133,7 +133,7 @@ export default {
       //   widgetPackage: this.widgetPackage,
       //   time: dayjs().second()
       // })))
-      await ElectronUtils.getAPI().invoke(Channel.WIDGET, "add-widget", this.widget.name, HostedMode.NORMAL);
+      await HostedWidgetApi.addWidget(this.widget.name, HostedMode.NORMAL);
     }
   }
 }

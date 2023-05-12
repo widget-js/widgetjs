@@ -4,7 +4,12 @@ import {WidgetData} from "../model/WidgetData";
 import {BroadcastApi} from "../api/BroadcastApi";
 import {WidgetApiEvent} from "../api/WidgetApi";
 
-export class WidgetDataRepository {
+export interface SaveWidgetOption {
+  sendBroadcast?: boolean
+  id?: string
+}
+
+export class WidgetDataApi {
   private static stores = new Map<string, LocalForage>()
 
   /**
@@ -38,15 +43,18 @@ export class WidgetDataRepository {
   /**
    * 通过组件名保存组件信息，通常用于存储可以在同类组件中共用的数据
    * @param data
+   * @param options
    */
-  public static async saveByName<T extends WidgetData>(data: T) {
+  public static async saveByName<T extends WidgetData>(data: T, options: SaveWidgetOption = {sendBroadcast: true}) {
     const store = this.getStore(data.name);
     const json = JSON.stringify(data);
     const result = await store.setItem(data.name, json);
-    const broadcastEvent = new BroadcastEvent({
-      event: WidgetApiEvent.DATA_CHANGED, payload: {name: data.name, json}
-    });
-    await BroadcastApi.send(broadcastEvent);
+    if (options?.sendBroadcast) {
+      const broadcastEvent = new BroadcastEvent({
+        event: WidgetApiEvent.DATA_CHANGED, payload: {name: data.name, json}
+      });
+      await BroadcastApi.send(broadcastEvent);
+    }
     return result;
   }
 

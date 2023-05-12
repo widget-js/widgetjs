@@ -3,8 +3,9 @@ import {BaseApi} from "./BaseApi";
 import {Point} from "../model/msic/graphics";
 
 interface IDeviceApi {
-  getCursorScreenPoint: () => Promise<Point>;
-  isAllKeyReleased: () => Promise<boolean>;
+  getCursorScreenPoint(): Promise<Point>;
+
+  isAllKeyReleased(): Promise<boolean>;
 }
 
 type DeviceApiMethods = keyof IDeviceApi;

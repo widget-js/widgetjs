@@ -2,10 +2,13 @@ import {Channel} from "./Channel";
 import {BaseApi} from "./BaseApi";
 
 interface ILogApi {
-  info: (...data: any[]) => void;
-  error: (...data: any[]) => void;
-  warn: (...data: any[]) => void;
-  log: (...data: any[]) => void;
+  info(...data: any[]): void;
+
+  error(...data: any[]): void;
+
+  warn(...data: any[]): void;
+
+  log(...data: any[]): void;
 }
 
 type LogApiMethods = keyof ILogApi;

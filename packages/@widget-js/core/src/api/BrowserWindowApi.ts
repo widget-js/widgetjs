@@ -167,5 +167,5 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 }
 
 const BrowserWindowApi = new BrowserWindowApiImpl();
-export {BrowserWindowApi, BrowserWindowApiMethods, BrowserWindowApiEvent}
+export {BrowserWindowApi, BrowserWindowApiMethods, BrowserWindowApiEvent, AlignPosition}
 

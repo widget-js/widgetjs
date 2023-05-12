@@ -9,9 +9,11 @@ import {BrowserWindowApiEvent} from "./BrowserWindowApi";
 type BroadcastEventType = WidgetApiEvent | BrowserWindowApiEvent | ShortcutApiEvent | ClipboardApiEvent | string
 
 interface IBroadcastApi {
-  send: (event: BroadcastEvent) => Promise<void>;
-  register: (...event: BroadcastEventType[]) => Promise<void>;
-  unregister: (...event: BroadcastEventType[]) => Promise<void>;
+  send(event: BroadcastEvent): Promise<void>;
+
+  register(...event: BroadcastEventType[]): Promise<void>;
+
+  unregister(...event: BroadcastEventType[]): Promise<void>;
 }
 
 type BroadcastApiMethods = keyof IBroadcastApi;

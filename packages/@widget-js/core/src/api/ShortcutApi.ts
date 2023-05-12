@@ -2,8 +2,9 @@ import {BaseApi} from "./BaseApi";
 import {Channel} from "./Channel";
 
 interface IShortcutApi {
-  register: (shortcut: string) => void
-  unregister: (shortcut: string) => void
+  register(shortcut: string): void
+
+  unregister(shortcut: string): void
 }
 
 type ShortcutApiMethods = keyof IShortcutApi;

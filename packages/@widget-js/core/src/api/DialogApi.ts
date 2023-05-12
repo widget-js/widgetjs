@@ -2,7 +2,7 @@ import {Channel} from "./Channel";
 import {BaseApi} from "./BaseApi";
 
 interface IDialogApi {
-  pickFile: (extensions?: string[]) => Promise<string | undefined>
+  pickFile(extensions?: string[]): Promise<string | undefined>
 }
 
 type DialogApiMethods = keyof IDialogApi;

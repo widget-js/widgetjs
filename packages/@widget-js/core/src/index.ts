@@ -11,7 +11,7 @@ export * from "./model/event/NativeKeyboardEvent";
 export * from "./model/event/AppMouseEvent";
 export * from "./model/WidgetPackage";
 export * from "./api/ElectronApi";
-export * from "./repository/WidgetDataRepository";
+export * from "./api/WidgetDataApi";
 export * from "./api/BrowserWindowApi";
 export * from "./lang/LanguageCode";
 export * from "./api/NotificationApi";

@@ -3,9 +3,9 @@ import {BaseApi} from "./BaseApi";
 
 
 interface IClipboardApi {
-  getSelectedText: () => Promise<string | undefined>;
+  getSelectedText(): Promise<string | undefined>;
 
-  getText: () => Promise<string | undefined>;
+  getText(): Promise<string | undefined>;
 }
 
 type ClipboardApiMethods = keyof IClipboardApi;

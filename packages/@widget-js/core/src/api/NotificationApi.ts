@@ -1,14 +1,20 @@
-import {AppNotification, NotificationType} from "../model/AppNotification";
+import {AppNotification} from "../model/AppNotification";
 import {Channel} from "./Channel";
-import {ElectronUtils} from "../utils/ElectronUtils";
 import {BaseApi} from "./BaseApi";
 
 interface INotificationApi {
-  send: (notification: AppNotification) => Promise<void>;
-  hide: () => Promise<void>;
+  send(notification: AppNotification): Promise<void>;
+
+  hide(): Promise<void>;
 }
 
 type NotificationApiMethods = keyof INotificationApi
+
+enum NotificationApiEvent {
+  CONFIRM = "event::cn.widgetjs.core.notification.confirm",
+  CANCEL = "event::cn.widgetjs.core.notification.cancel",
+  HIDE = "event::cn.widgetjs.core.notification.hide",
+}
 
 class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INotificationApi {
 
@@ -29,7 +35,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
    * @param lyric     歌词字符串
    */
   async call(avatar: string, audio: string, title: string, message: string, lyric: string) {
-    this.invoke(new AppNotification({
+    await this.invoke(new AppNotification({
       avatar,
       audio,
       message,
@@ -69,7 +75,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
   }
 
   async countdown(message: string, targetTime: string) {
-    this.send(new AppNotification({
+    await this.send(new AppNotification({
       message,
       targetTime,
       backgroundColor: 'rgba(0,0,0,0.5)',
@@ -79,7 +85,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
   }
 
   async success(message: string, duration: number = 5000) {
-    this.send(new AppNotification({
+    await this.send(new AppNotification({
       message,
       type: "success",
       icon: "check_circle_line",
@@ -88,7 +94,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
   }
 
   async error(message: string, duration: number = 5000) {
-    this.send(new AppNotification({
+    await this.send(new AppNotification({
       message,
       type: "error",
       icon: "close_circle_line",
@@ -97,7 +103,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
   }
 
   async warning(message: string, duration: number = 5000) {
-    this.send(new AppNotification({
+    await this.send(new AppNotification({
       message,
       type: "warning",
       icon: "warning_line",
@@ -106,7 +112,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
   }
 
   async info(message: string, duration: number = 5000) {
-    this.send(new AppNotification({
+    await this.send(new AppNotification({
       message,
       type: "info",
       icon: "information_line",
@@ -118,9 +124,7 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
    * 隐藏通知
    */
   async hide() {
-    if (ElectronUtils.hasElectronApi()) {
-      this.invokeMethod('hide');
-    }
+    await this.invokeMethod('hide');
   }
 
   getChannel(): string {
@@ -129,4 +133,4 @@ class NotificationApiImpl extends BaseApi<NotificationApiMethods> implements INo
 }
 
 const NotificationApi: NotificationApiImpl = new NotificationApiImpl();
-export {NotificationApi, NotificationApiMethods}
+export {NotificationApi, NotificationApiMethods, NotificationApiEvent}

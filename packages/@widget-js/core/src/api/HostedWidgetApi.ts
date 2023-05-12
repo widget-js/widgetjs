@@ -2,16 +2,27 @@ import {Channel} from "./Channel";
 import {HostedWidget} from "../model/HostedWidget";
 import {WidgetParams} from "../model/WidgetParams";
 import {BaseApi} from "./BaseApi";
+import {HostedMode} from '../model/HostedMode';
+import {Widget} from '../model/Widget';
 
 interface IHostedWidgetApi {
-  removeHostedWidget: (id: string) => Promise<void>;
-  removeHostedWidgetByName: (name: string) => Promise<HostedWidget[]>;
-  getHostedWidgets: () => Promise<HostedWidget[]>;
-  openDevTools: (id: string) => Promise<void>;
-  openConfigRoute: (id: string) => Promise<void>;
-  registerActiveShortcut: (id: string, shortcut: string) => Promise<boolean>;
-  setProxy: (id: string, proxy: string) => Promise<boolean>;
-  getHostedWidget: (id: string) => Promise<HostedWidget>;
+  removeHostedWidget(id: string): Promise<void>;
+
+  removeHostedWidgetByName(name: string): Promise<HostedWidget[]>;
+
+  getHostedWidgets(): Promise<HostedWidget[]>;
+
+  openDevTools(id: string): Promise<void>;
+
+  openConfigRoute(id: string): Promise<void>;
+
+  registerActiveShortcut(id: string, shortcut: string): Promise<boolean>;
+
+  setProxy(id: string, proxy: string): Promise<boolean>;
+
+  getHostedWidget(id: string): Promise<HostedWidget>;
+
+  addWidget(widgetName: string, hostMode: HostedMode): Promise<Widget[]>;
 }
 
 type HostedWidgetApiMethods = keyof IHostedWidgetApi;
@@ -27,6 +38,11 @@ export class HostedWidgetApiImpl extends BaseApi<HostedWidgetApiMethods> impleme
    */
   async removeHostedWidget(id: string) {
     return this.invokeMethod('removeHostedWidget', id)
+  }
+
+
+  addWidget(widgetName: string, hostMode: HostedMode): Promise<Widget[]> {
+    return this.invokeMethod('addWidget', widgetName, hostMode);
   }
 
   /**
@@ -80,4 +96,4 @@ export class HostedWidgetApiImpl extends BaseApi<HostedWidgetApiMethods> impleme
 }
 
 const HostedWidgetApi = new HostedWidgetApiImpl();
-export {HostedWidgetApi,HostedWidgetApiMethods}
+export {HostedWidgetApi, HostedWidgetApiMethods}

@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/core",
-  "version": "0.5.5",
+  "version": "0.5.12",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -21,7 +21,8 @@
     "build:types": "node tools/cleanup types && tsc -p config/tsconfig.types.json",
     "postbuild": "rimraf ../../electron/node_modules/@widget-js/core/",
     "package": "npm run build && npm pack",
-    "addscope": "node tools/packagejson name @widget-js/core"
+    "addscope": "node tools/packagejson name @widget-js/core",
+    "publish": "pnpm publish --no-git-checks"
   },
   "author": "Neo Fu <rtugeek@gmail.com>",
   "license": "MIT",

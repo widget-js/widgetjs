@@ -73,12 +73,9 @@ export default {
         guide.value = false
       }, 4000)
     }
-    useAppBroadcast([WidgetApiEvent.DATA_CHANGED, WidgetApiEvent.EDIT_DESKTOP_WIDGETS], async (broadcastEvent: BroadcastEvent) => {
-      if (broadcastEvent.event == WidgetApiEvent.DATA_CHANGED) {
-        if (broadcastEvent.payload.name == widget.value?.name) {
-          refreshKey.value = new Date();
-        }
-      } else if (broadcastEvent.event == WidgetApiEvent.EDIT_DESKTOP_WIDGETS) {
+    useAppBroadcast([WidgetApiEvent.EDIT_DESKTOP_WIDGETS], async (broadcastEvent: BroadcastEvent) => {
+      console.log(broadcastEvent);
+      if (broadcastEvent.event == WidgetApiEvent.EDIT_DESKTOP_WIDGETS) {
         editing.value = broadcastEvent.payload;
       }
     });
@@ -113,7 +110,7 @@ export default {
       widgetUrl.value = UrlUtils.getWidgetUrl(widget.value!.getIndexRoute().url, widgetPackage.value!, getWidgetParams());
     };
 
-    useIpcListener(Channel.BROWSER_WINDOW, async (args) => {
+    useIpcListener(Channel.BROWSER_WINDOW, async (...args) => {
       const event = args[0];
       console.log(event)
       if (event == "resized") {

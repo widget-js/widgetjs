@@ -162,7 +162,7 @@ export default {
     },
     async isWidgetHide(newValue) {
       if (newValue) {
-        BrowserWindowApi.setIgnoreMouseEvent(true)
+        await BrowserWindowApi.setIgnoreMouseEvent(true)
         await BrowserWindowApi.setResizable(false)
         this.showContextMenu = false
       } else {
@@ -203,7 +203,6 @@ export default {
       this.bgHover = false
     },
     hotspotMouseEnter() {
-      console.log('hotspotMouseEnter')
       this.isFocusedModel = true
       BrowserWindowApi.setIgnoreMouseEvent(false)
     },
