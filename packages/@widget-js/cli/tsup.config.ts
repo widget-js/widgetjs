@@ -1,5 +1,6 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-    outDir: 'lib'
+    outDir: 'lib',
+    format: 'none'
 });

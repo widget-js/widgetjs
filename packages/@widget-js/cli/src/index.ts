@@ -1,47 +1,55 @@
-import {Option, program} from 'commander'
-import fs from 'fs'
-import path from 'path'
-import * as process from 'process'
+import { Option, program } from "commander";
+import fs from "fs";
+import path from "path";
+import * as process from "process";
 
-import {fileURLToPath} from 'url'
-import figlet from 'figlet'
-import gradient from 'gradient-string'
+import { fileURLToPath } from "url";
+import figlet from "figlet";
+import gradient from "gradient-string";
+import consola from "consola";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 //
-const packageJsonPath = path.join(__dirname, '../package.json')
-let cliPackage = JSON.parse(fs.readFileSync(packageJsonPath).toString())
+const packageJsonPath = path.join(__dirname, "../package.json");
+let cliPackage = JSON.parse(fs.readFileSync(packageJsonPath).toString());
 
-console.log(gradient.pastel.multiline(figlet.textSync('widget-cli', {horizontalLayout: 'full'})))
-program.version(`@widget-js/cli ${cliPackage.version}`).usage('<command> [options]')
+console.log(gradient.pastel.multiline(figlet.textSync("widget-cli", { horizontalLayout: "full" })));
+program.version(`@widget-js/cli ${cliPackage.version}`).usage("<command> [options]");
 program
-  .command('create')
-  .description('创建新的组件')
+  .command("create")
+  .description("创建新的组件")
   .action(async () => {
-    const createWidget = await import('./createWidget')
-    await createWidget.default()
-  })
+    const createWidget = await import("./createWidget");
+    await createWidget.default();
+  });
 
 program
-  .command('build')
-  .description('执行编译任务')
+  .command("upgrade")
+  .description("升级依赖")
   .action(async () => {
-    const build = await import('./build/build')
-    await build.build()
-  })
+    const upgrade = await import("./upgrade/upgrade");
+    const instance = new upgrade.Upgrade();
+    await instance.start()
+  });
 
-let typeOption = new Option('-t, --type <type>').choices(['ftp', 'oss'])
 program
-  .command('release')
-  .description('通过FTP/OSS发布文件，仅内部使用')
+  .command("build")
+  .description("执行编译任务")
+  .action(async () => {
+    const build = await import("./build/build");
+    await build.build();
+  });
+
+let typeOption = new Option("-t, --type <type>").choices(["ftp", "oss"]);
+program
+  .command("release")
+  .description("通过FTP/OSS发布文件，仅内部使用")
   .addOption(typeOption)
   .action(async (options, command) => {
     // @ts-ignore
-    let release = await import('./release/release');
-    await release.default(options)
-  })
+    let release = await import("./release/release");
+    await release.default(options);
+  });
 
-//TODO init 初始化项目
-//TODO publish 发布
-program.parse(process.argv)
+program.parse(process.argv);

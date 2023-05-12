@@ -58,9 +58,14 @@ function exit(code = 0) {
     throw new Error(`Process exited with code ${code}`);
   }
 }
+function getPackagePath() {
+  return import_path.default.join(import_process.default.cwd(), "package.json");
+}
+function getPackageJson() {
+  return JSON.parse(import_fs.default.readFileSync(getPackagePath()).toString());
+}
 function getPackageVersion() {
-  const packagePath = import_path.default.join(import_process.default.cwd(), "package.json");
-  return JSON.parse(import_fs.default.readFileSync(packagePath).toString())["version"];
+  return getPackageJson()["version"];
 }
 var import_path, import_process, import_fs;
 var init_utils = __esm({
@@ -269,14 +274,70 @@ var init_createWidget = __esm({
   }
 });
 
+// src/upgrade/upgrade.ts
+var upgrade_exports = {};
+__export(upgrade_exports, {
+  Upgrade: () => Upgrade
+});
+var import_package_json, import_ora, import_fs3, packages, spinner, Upgrade;
+var init_upgrade = __esm({
+  "src/upgrade/upgrade.ts"() {
+    "use strict";
+    import_package_json = __toESM(require("package-json"), 1);
+    import_ora = __toESM(require("ora"), 1);
+    init_utils();
+    import_fs3 = __toESM(require("fs"), 1);
+    packages = {
+      "@widget-js/core": "",
+      "@widget-js/vue3": "",
+      "@widget-js/cli": "",
+      "@widget-js/vite-plugin-widget": ""
+    };
+    spinner = (0, import_ora.default)("Connecting");
+    Upgrade = class {
+      async start() {
+        spinner.start();
+        let json = getPackageJson();
+        let packageNames = Object.keys(packages);
+        let dependencies = json["dependencies"];
+        let devDependencies = json["devDependencies"];
+        await this.upgradePackage(dependencies, packageNames);
+        await this.upgradePackage(devDependencies, packageNames);
+        import_fs3.default.writeFileSync(getPackagePath(), JSON.stringify(json, null, 2));
+        spinner.succeed("Upgraded!");
+      }
+      async upgradePackage(dependencies, packageNames) {
+        let localPackages = Object.keys(dependencies);
+        for (let localPackage of localPackages) {
+          if (packageNames.indexOf(localPackage) > -1) {
+            let packageVersion = packages[localPackage];
+            if (!packageVersion) {
+              packageVersion = await this.getRemoteVersion(localPackage);
+              packages[localPackage] = packageVersion;
+            }
+            dependencies[localPackage] = `^${packageVersion}`;
+          }
+        }
+      }
+      async getRemoteVersion(packageName) {
+        spinner.info(`Fetching package version:${packageName}`);
+        const metadata = await (0, import_package_json.default)(packageName);
+        let version = metadata["version"];
+        spinner.info(`version:${version}`);
+        return version;
+      }
+    };
+  }
+});
+
 // src/build/build.ts
 var build_exports = {};
 __export(build_exports, {
   build: () => build
 });
 function build() {
-  const preloadSpinner = (0, import_ora.default)("Preload").start();
-  const mainSpinner = (0, import_ora.default)("Main").start();
+  const preloadSpinner = (0, import_ora2.default)("Preload").start();
+  const mainSpinner = (0, import_ora2.default)("Main").start();
   const build2 = (0, import_child_process.exec)("npm run build:preload").on("close", () => {
     import_consola2.default.success("done");
   });
@@ -298,11 +359,11 @@ function build() {
     import_consola2.default.log("done");
   });
 }
-var import_ora, import_child_process, import_consola2;
+var import_ora2, import_child_process, import_consola2;
 var init_build = __esm({
   "src/build/build.ts"() {
     "use strict";
-    import_ora = __toESM(require("ora"), 1);
+    import_ora2 = __toESM(require("ora"), 1);
     import_child_process = require("child_process");
     import_consola2 = __toESM(require("consola"), 1);
   }
@@ -311,18 +372,18 @@ var init_build = __esm({
 // src/release/update-zip.ts
 function zipDirectory(sourceDir, outPath, ignoreDir) {
   const archive = (0, import_archiver.default)("zip", { zlib: { level: 9 } });
-  const stream = import_fs3.default.createWriteStream(outPath);
+  const stream = import_fs4.default.createWriteStream(outPath);
   return new Promise((resolve, reject) => {
     archive.glob("**/*", { cwd: sourceDir, ignore: ["node_modules/**"] }).on("error", (err) => reject(err)).pipe(stream);
     stream.on("close", () => resolve());
     archive.finalize();
   });
 }
-var import_fs3, import_archiver, update_zip_default;
+var import_fs4, import_archiver, update_zip_default;
 var init_update_zip = __esm({
   "src/release/update-zip.ts"() {
     "use strict";
-    import_fs3 = __toESM(require("fs"), 1);
+    import_fs4 = __toESM(require("fs"), 1);
     import_archiver = __toESM(require("archiver"), 1);
     update_zip_default = zipDirectory;
   }
@@ -345,14 +406,14 @@ async function copy(dist, src) {
     console.error(e);
   }
 }
-var import_ali_oss, import_fs4, import_chalk2, packageData, AccessKeyID, AccessKeySecret, headers, clinet;
+var import_ali_oss, import_fs5, import_chalk2, packageData, AccessKeyID, AccessKeySecret, headers, clinet;
 var init_oss = __esm({
   "src/release/oss.ts"() {
     "use strict";
     import_ali_oss = __toESM(require("ali-oss"), 1);
-    import_fs4 = __toESM(require("fs"), 1);
+    import_fs5 = __toESM(require("fs"), 1);
     import_chalk2 = __toESM(require("chalk"), 1);
-    packageData = JSON.parse(import_fs4.default.readFileSync("./package.json").toString());
+    packageData = JSON.parse(import_fs5.default.readFileSync("./package.json").toString());
     AccessKeyID = packageData.oss?.id ?? "default";
     AccessKeySecret = packageData.oss?.secret ?? "default";
     headers = {
@@ -387,11 +448,11 @@ function ftpUpload() {
   const releaseJsonFilePath = import_path3.default.join(process3.cwd(), "release.json");
   const packageVersion = getPackageVersion();
   import_consola3.default.info("Package Version:", packageVersion);
-  let releaseJson = import_fs5.default.readFileSync(releaseJsonFilePath).toString().replaceAll("${version}", packageVersion);
+  let releaseJson = import_fs6.default.readFileSync(releaseJsonFilePath).toString().replaceAll("${version}", packageVersion);
   const releaseConfig = JSON.parse(releaseJson);
   const sshConfigFile = import_path3.default.resolve(import_os.default.homedir(), ".ssh/config");
   import_consola3.default.info("SSH Config File Path:", sshConfigFile);
-  const sshConfigs = import_ssh_config.default.parse(import_fs5.default.readFileSync(sshConfigFile).toString());
+  const sshConfigs = import_ssh_config.default.parse(import_fs6.default.readFileSync(sshConfigFile).toString());
   let sshConfig = sshConfigs.compute(releaseConfig.ftpConfig.host);
   if (!sshConfig) {
     import_consola3.default.error(`SSH config ${releaseConfig.ftpConfig.host} not found`);
@@ -401,10 +462,10 @@ function ftpUpload() {
   import_inquirer3.default.prompt([{ type: "password", name: "password", mask: "*", message: "Enter key pair password" }]).then(async (answer) => {
     let ftpClient = new import_ssh2_sftp_client.default();
     const port = sshConfig["Port"];
-    const key = import_fs5.default.readFileSync(import_path3.default.resolve(import_os.default.homedir(), ".ssh/id_rsa"));
-    const spinner = (0, import_ora2.default)("Connecting");
+    const key = import_fs6.default.readFileSync(import_path3.default.resolve(import_os.default.homedir(), ".ssh/id_rsa"));
+    const spinner2 = (0, import_ora3.default)("Connecting");
     try {
-      spinner.start();
+      spinner2.start();
       await ftpClient.connect({
         host: sshConfig["HostName"],
         port: port ? parseInt(port) : 22,
@@ -417,29 +478,29 @@ function ftpUpload() {
         if (typeof item.src == "string") {
           if (item.remoteCopy) {
             await checkParentDir(ftpClient, item.dest, (dir) => {
-              spinner.warn(`Create Dir: ${dir}`);
+              spinner2.warn(`Create Dir: ${dir}`);
             });
             let destExists = await ftpClient.exists(item.dest);
             if (destExists) {
-              spinner.warn(`Delete exists file:${item.dest}`);
+              spinner2.warn(`Delete exists file:${item.dest}`);
               await ftpClient.delete(item.dest);
             }
-            spinner.info(`Copying File: ${item.src} -> ${item.dest}`);
+            spinner2.info(`Copying File: ${item.src} -> ${item.dest}`);
             await ftpClient.rcopy(item.src, item.dest);
           } else {
             const localFile = import_path3.default.resolve(process3.cwd(), item.src);
-            if (!item.remoteCopy && !import_fs5.default.existsSync(localFile)) {
-              spinner.warn(`Skip not exists file:${localFile}`);
+            if (!item.remoteCopy && !import_fs6.default.existsSync(localFile)) {
+              spinner2.warn(`Skip not exists file:${localFile}`);
               continue;
             }
-            if (import_fs5.default.lstatSync(localFile).isDirectory()) {
-              spinner.info(`Uploading Dir: ${localFile} -> ${item.dest}`);
+            if (import_fs6.default.lstatSync(localFile).isDirectory()) {
+              spinner2.info(`Uploading Dir: ${localFile} -> ${item.dest}`);
               await ftpClient.uploadDir(localFile, item.dest);
             } else {
               await checkParentDir(ftpClient, item.dest, (dir) => {
-                spinner.warn(`Create Dir: ${dir}`);
+                spinner2.warn(`Create Dir: ${dir}`);
               });
-              spinner.info(`Uploading File: ${localFile} -> ${item.dest}`);
+              spinner2.info(`Uploading File: ${localFile} -> ${item.dest}`);
               await ftpClient.put(localFile, item.dest);
             }
           }
@@ -447,26 +508,26 @@ function ftpUpload() {
           await ftpClient.put(Buffer.from(JSON.stringify(item.src), "utf-8"), item.dest);
         }
       }
-      spinner.succeed("Files uploaded!");
+      spinner2.succeed("Files uploaded!");
       await ftpClient.end();
     } catch (e) {
-      spinner.fail(`Connection error:${e}`);
+      spinner2.fail(`Connection error:${e}`);
       await ftpClient.end();
     }
   });
 }
-var import_path3, import_fs5, import_ssh_config, import_os, import_ssh2_sftp_client, import_consola3, import_inquirer3, import_ora2, process3;
+var import_path3, import_fs6, import_ssh_config, import_os, import_ssh2_sftp_client, import_consola3, import_inquirer3, import_ora3, process3;
 var init_ftp = __esm({
   "src/release/ftp.ts"() {
     "use strict";
     import_path3 = __toESM(require("path"), 1);
-    import_fs5 = __toESM(require("fs"), 1);
+    import_fs6 = __toESM(require("fs"), 1);
     import_ssh_config = __toESM(require("@widget-js/ssh-config"), 1);
     import_os = __toESM(require("os"), 1);
     import_ssh2_sftp_client = __toESM(require("ssh2-sftp-client"), 1);
     import_consola3 = __toESM(require("consola"), 1);
     import_inquirer3 = __toESM(require("inquirer"), 1);
-    import_ora2 = __toESM(require("ora"), 1);
+    import_ora3 = __toESM(require("ora"), 1);
     process3 = __toESM(require("process"), 1);
     init_utils();
   }
@@ -477,11 +538,11 @@ var release_exports = {};
 __export(release_exports, {
   default: () => release_default
 });
-var import_fs6, import_path4, import_chalk3, release, release_default;
+var import_fs7, import_path4, import_chalk3, release, release_default;
 var init_release = __esm({
   "src/release/release.ts"() {
     "use strict";
-    import_fs6 = __toESM(require("fs"), 1);
+    import_fs7 = __toESM(require("fs"), 1);
     import_path4 = __toESM(require("path"), 1);
     init_promptChecker();
     init_update_zip();
@@ -494,8 +555,8 @@ var init_release = __esm({
         await ftpUpload();
         return;
       }
-      const packageJSON = JSON.parse(import_fs6.default.readFileSync("package.json", "utf-8"));
-      const changelogJSON = JSON.parse(import_fs6.default.readFileSync("changelog.json", "utf-8"));
+      const packageJSON = JSON.parse(import_fs7.default.readFileSync("package.json", "utf-8"));
+      const changelogJSON = JSON.parse(import_fs7.default.readFileSync("changelog.json", "utf-8"));
       const version = packageJSON["version"];
       const changelog = changelogJSON[version];
       let needUpdateElectron = await promptChecker_default({
@@ -512,7 +573,7 @@ var init_release = __esm({
         downloadLink: ""
       };
       let installerPath = import_path4.default.join(`./packaged/widgets-${version}-setup-win-x64.exe`);
-      if (!import_fs6.default.existsSync(installerPath)) {
+      if (!import_fs7.default.existsSync(installerPath)) {
         installerPath = import_path4.default.join(`./packaged/electron-${version}-setup-win-x64.exe`);
       }
       const updateZipPath = import_path4.default.join(`./packaged/update.zip`);
@@ -536,7 +597,7 @@ var init_release = __esm({
 
 // src/index.ts
 var import_commander = require("commander");
-var import_fs7 = __toESM(require("fs"), 1);
+var import_fs8 = __toESM(require("fs"), 1);
 var import_path5 = __toESM(require("path"), 1);
 var process4 = __toESM(require("process"), 1);
 var import_url2 = require("url");
@@ -546,12 +607,17 @@ var import_meta2 = {};
 var __filename = (0, import_url2.fileURLToPath)(import_meta2.url);
 var __dirname = import_path5.default.dirname(__filename);
 var packageJsonPath = import_path5.default.join(__dirname, "../package.json");
-var cliPackage = JSON.parse(import_fs7.default.readFileSync(packageJsonPath).toString());
+var cliPackage = JSON.parse(import_fs8.default.readFileSync(packageJsonPath).toString());
 console.log(import_gradient_string.default.pastel.multiline(import_figlet.default.textSync("widget-cli", { horizontalLayout: "full" })));
 import_commander.program.version(`@widget-js/cli ${cliPackage.version}`).usage("<command> [options]");
 import_commander.program.command("create").description("\u521B\u5EFA\u65B0\u7684\u7EC4\u4EF6").action(async () => {
   const createWidget2 = await Promise.resolve().then(() => (init_createWidget(), createWidget_exports));
   await createWidget2.default();
+});
+import_commander.program.command("upgrade").description("\u5347\u7EA7\u4F9D\u8D56").action(async () => {
+  const upgrade = await Promise.resolve().then(() => (init_upgrade(), upgrade_exports));
+  const instance = new upgrade.Upgrade();
+  await instance.start();
 });
 import_commander.program.command("build").description("\u6267\u884C\u7F16\u8BD1\u4EFB\u52A1").action(async () => {
   const build2 = await Promise.resolve().then(() => (init_build(), build_exports));

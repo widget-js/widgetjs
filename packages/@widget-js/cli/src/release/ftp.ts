@@ -1,14 +1,13 @@
-import path from 'path'
-import fs from 'fs'
-import SSHConfig from '@widget-js/ssh-config'
-import os from 'os'
-import Client from 'ssh2-sftp-client'
-import consola from 'consola'
-import inquirer from 'inquirer'
-import ora from 'ora'
-import * as process from 'process'
-import * as console from 'console'
-import {getPackageVersion} from "../utils";
+import path from "path";
+import fs from "fs";
+import SSHConfig from "@widget-js/ssh-config";
+import os from "os";
+import Client from "ssh2-sftp-client";
+import consola from "consola";
+import inquirer from "inquirer";
+import ora from "ora";
+import * as process from "process";
+import { getPackageVersion } from "../utils";
 
 
 interface PasswordAnswer {

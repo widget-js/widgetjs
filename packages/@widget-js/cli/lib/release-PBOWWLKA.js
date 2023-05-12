@@ -1,7 +1,9 @@
 import {
-  getPackageVersion,
   promptChecker_default
-} from "./chunk-VOTZXZ5O.js";
+} from "./chunk-3GPAHQ6O.js";
+import {
+  getPackageVersion
+} from "./chunk-SIAOIY3B.js";
 
 // src/release/release.ts
 import fs4 from "fs";
