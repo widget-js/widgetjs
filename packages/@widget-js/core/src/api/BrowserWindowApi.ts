@@ -23,7 +23,7 @@ interface IBrowserWindowApi {
 
   isAlwaysOnTop(): Promise<boolean>;
 
-  openUrl(url: string): Promise<void>;
+  openUrl(url: string, option?: OpenUrlOptions): Promise<void>;
 
   moveTop(): Promise<void>;
 
@@ -50,6 +50,10 @@ interface IBrowserWindowApi {
 
 type BrowserWindowApiMethods = keyof IBrowserWindowApi;
 type AlignPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+
+interface OpenUrlOptions {
+  partition?: string
+}
 
 enum BrowserWindowApiEvent {
   BLUR = "event::cn.widgetjs.core.browser-window.blur",
@@ -90,8 +94,8 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
     return await this.invokeMethod('isAlwaysOnTop');
   }
 
-  async openUrl(url: string) {
-    await this.invokeMethod('openUrl', url);
+  async openUrl(url: string, option?: OpenUrlOptions) {
+    await this.invokeMethod('openUrl', url, option);
   }
 
 
@@ -167,5 +171,5 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 }
 
 const BrowserWindowApi = new BrowserWindowApiImpl();
-export {BrowserWindowApi, BrowserWindowApiMethods, BrowserWindowApiEvent, AlignPosition}
+export {BrowserWindowApi, BrowserWindowApiMethods, OpenUrlOptions, BrowserWindowApiEvent, AlignPosition}
 
