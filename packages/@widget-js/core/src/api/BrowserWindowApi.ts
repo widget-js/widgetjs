@@ -29,7 +29,7 @@ interface IBrowserWindowApi {
 
   openDevTools(): Promise<void>;
 
-  setPosition(x: number, y: number, animation: boolean): Promise<void>;
+  setPosition(options: SetPositionOptions): Promise<void>;
 
   getPosition(): Promise<Position>;
 
@@ -53,6 +53,15 @@ type AlignPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | '
 
 interface OpenUrlOptions {
   partition?: string
+}
+
+interface SetPositionOptions {
+  x?: number;
+  y?: number;
+  /**
+   * 只有在 macOS 上有效
+   */
+  animation?: boolean;
 }
 
 enum BrowserWindowApiEvent {
@@ -107,20 +116,13 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
     await this.invokeMethod('openDevTools');
   }
 
-  /**
-   * 设置窗口位置
-   * @param x
-   * @param y
-   * @param animation 动画只在mac系统有效
-   */
-  async setPosition(x: number, y: number, animation: boolean) {
-    await this.invokeMethod('setPosition', x, y, animation);
+  async setPosition(options: SetPositionOptions) {
+    await this.invokeMethod('setPosition', options);
   }
 
   async getPosition(): Promise<Position> {
     return await this.invokeMethod('getPosition');
   }
-
 
   async blur() {
     return await this.invokeMethod('blur');
@@ -171,5 +173,12 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 }
 
 const BrowserWindowApi = new BrowserWindowApiImpl();
-export {BrowserWindowApi, BrowserWindowApiMethods, OpenUrlOptions, BrowserWindowApiEvent, AlignPosition}
+export {
+  BrowserWindowApi,
+  BrowserWindowApiMethods,
+  OpenUrlOptions,
+  SetPositionOptions,
+  BrowserWindowApiEvent,
+  AlignPosition
+}
 
