@@ -1,22 +1,42 @@
 import localforage from "localforage";
 import {BroadcastEvent} from "../model/event/BroadcastEvent";
 import {WidgetData} from "../model/WidgetData";
-import {BroadcastApi} from "../api/BroadcastApi";
-import {WidgetApiEvent} from "../api/WidgetApi";
+import {BroadcastApi} from "./BroadcastApi";
+import {WidgetApiEvent} from "./WidgetApi";
 
 export interface SaveWidgetOption {
   sendBroadcast?: boolean
   id?: string
 }
 
-export class WidgetDataApi {
-  private static stores = new Map<string, LocalForage>()
+export interface IWidgetDataApi {
+  findByName<T extends WidgetData>(name: string, type: {
+    new(name: string, id?: string): T;
+  }): Promise<T | undefined>
+
+  findByName<T extends WidgetData>(data: T): Promise<T | undefined>
+
+  save(data: WidgetData): Promise<string>
+
+  getStore(name: string): LocalForage
+
+  saveByName<T extends WidgetData>(data: T, options?: SaveWidgetOption): Promise<string>
+
+  find<T extends WidgetData>(name: string, id: string, type: {
+    new(name: string, id?: string): T;
+  }): Promise<T | undefined>
+}
+
+type WidgetDataApiMethods = keyof IWidgetDataApi;
+
+export class WidgetDataApiImpl implements IWidgetDataApi {
+  private stores = new Map<string, LocalForage>()
 
   /**
    * 保存组件数据
    * @param data
    */
-  public static async save(data: WidgetData) {
+  public async save(data: WidgetData) {
     let store = this.getStore(data.name);
     let json = JSON.stringify(data);
     const result = await store.setItem(this.getKey(data.name, data.id), json);
@@ -31,7 +51,7 @@ export class WidgetDataApi {
    * 获取组件 LocalForage 存储实例
    * @param name
    */
-  public static getStore(name: string): LocalForage {
+  public getStore(name: string): LocalForage {
     if (this.stores.has(name)) {
       return this.stores.get(name)!
     }
@@ -45,7 +65,7 @@ export class WidgetDataApi {
    * @param data
    * @param options
    */
-  public static async saveByName<T extends WidgetData>(data: T, options: SaveWidgetOption = {sendBroadcast: true}) {
+  public async saveByName<T extends WidgetData>(data: T, options: SaveWidgetOption = {sendBroadcast: true}) {
     const store = this.getStore(data.name);
     const json = JSON.stringify(data);
     const result = await store.setItem(data.name, json);
@@ -58,20 +78,29 @@ export class WidgetDataApi {
     return result;
   }
 
-  public static async findByName<T extends WidgetData>(name: string, type: {
-    new(name: string, id?: string): T;
-  }): Promise<T | undefined> {
+  public async findByName<T extends WidgetData>(...args: any[]): Promise<T | undefined> {
+    let name = '';
+    let dbStr: string | null = '';
+    let data: T;
+    if (args.length === 2) {
+      name = args[0];
+      const type = args[1];
+      data = new type(name);
+    } else {
+      data = args[0] as T;
+      name = data.name;
+    }
     let store = this.getStore(name);
-    let result = await store.getItem<string>(name);
-    if (result) {
-      const widgetData = new type(name);
-      widgetData.parseJSON(JSON.parse(result))
-      return widgetData;
+    dbStr = await store.getItem<string>(name);
+    if (dbStr) {
+      data.parseJSON(JSON.parse(dbStr))
+      return data;
     }
     return undefined;
   }
 
-  public static async find<T extends WidgetData>(name: string, id: string, type: {
+
+  public async find<T extends WidgetData>(name: string, id: string, type: {
     new(name: string, id?: string): T;
   }): Promise<T | undefined> {
     let store = this.getStore(name);
@@ -84,7 +113,10 @@ export class WidgetDataApi {
     return undefined;
   }
 
-  private static getKey(name: string, id?: string) {
+  private getKey(name: string, id?: string) {
     return `${name}@${id}`;
   }
 }
+
+const WidgetDataApi: IWidgetDataApi = new WidgetDataApiImpl();
+export {WidgetDataApi, WidgetDataApiMethods};
