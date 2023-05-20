@@ -46,6 +46,8 @@ interface IBrowserWindowApi {
   alignToScreen(align: AlignPosition): Promise<void>;
 
   existsByUrl(url: string): Promise<boolean>;
+
+  getMaximumSize(): Promise<number[]>;
 }
 
 type BrowserWindowApiMethods = keyof IBrowserWindowApi;
@@ -168,6 +170,10 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
    */
   async existsByUrl(url: string): Promise<boolean> {
     return await this.invokeMethod('existsByUrl', url);
+  }
+
+  async getMaximumSize(): Promise<number[]> {
+    return await this.invokeMethod('getMaximumSize');
   }
 
 }
