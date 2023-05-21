@@ -16,6 +16,7 @@
                   ref="widgetFrame"
                   :key="refreshKey"
                   v-if="widget && widgetPackage"
+                  :widget="widget"
                   @mouseleave="widgetMouseLeave"
                   @mouseenter="widgetMouseEnter"
                   :background-throttling="widget.backgroundThrottling?'yes':'no'"

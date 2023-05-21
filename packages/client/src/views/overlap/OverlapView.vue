@@ -16,6 +16,7 @@
         :key="refreshKey"
         v-if="preloadPath"
         :preload="preloadPath"
+        :partition="`persist:${widget.packageName}`"
         :webpreferences="`backgroundThrottling=${widget.backgroundThrottling}`"
     />
     <template #actions>

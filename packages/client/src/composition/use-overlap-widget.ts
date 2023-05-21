@@ -109,7 +109,7 @@ export function useOverlapWidget(option: UseOverlapWidgetOption): UseOverlapWidg
         }
     })
 
-    useIpcListener(Channel.BROWSER_WINDOW, async (args) => {
+    useIpcListener(Channel.BROWSER_WINDOW, async (...args) => {
         const event = args[0]
         console.log('ipc event:', event)
 

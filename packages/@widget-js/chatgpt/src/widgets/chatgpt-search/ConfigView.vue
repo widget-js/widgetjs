@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import {reactive, ref, watch} from "vue";
 import {BindShortcutField, useWidget, WidgetConfigOption} from "@widget-js/vue3";
-import {HostedWidgetApi, WidgetData, WidgetDataRepository} from "@widget-js/core";
+import {HostedWidgetApi, WidgetData, WidgetDataApi} from "@widget-js/core";
 
 const shortcut = ref("Ctrl+Space");
 const proxyRule = ref("");
@@ -45,7 +45,7 @@ const widgetConfigOption = reactive(new WidgetConfigOption({
 
 
 async function onSaveClick() {
-  await WidgetDataRepository.save(this.widgetData);
+  await WidgetDataApi.save(this.widgetData);
   await HostedWidgetApi.setProxy(widgetParams.id!, proxyRule.value);
   window.close();
 }

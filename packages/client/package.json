@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
-    "@vue/shared": "^3.2.47",
     "@vueuse/core": "^9.12.0",
     "@vueuse/integrations": "^9.12.0",
     "@widget-js/core": "workspace:*",

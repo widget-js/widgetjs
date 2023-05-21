@@ -115,7 +115,7 @@ export default {
       }, 4000)
     }
     const hideWidget = () => {
-      widgetY.value = -widgetHeight.value - extraHeight.value - padding.value
+      widgetY.value = - widgetHeight.value - extraHeight.value - padding.value - 16
     }
 
     const showWidget = () => {

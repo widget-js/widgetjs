@@ -22,7 +22,7 @@
     "postbuild": "rimraf ../../electron/node_modules/@widget-js/core/",
     "package": "npm run build && npm pack",
     "addscope": "node tools/packagejson name @widget-js/core",
-    "publish": "pnpm publish --no-git-checks"
+    "publish": "npm publish --no-git-checks"
   },
   "author": "Neo Fu <rtugeek@gmail.com>",
   "license": "MIT",

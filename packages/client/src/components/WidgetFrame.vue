@@ -9,6 +9,7 @@
         v-if="preloadPath"
         :style="sizeStyle"
         :preload="preloadPath"
+        :partition="`persist:${widget.packageName}`"
         :webpreferences="`backgroundThrottling=${backgroundThrottling}`"
     />
     <transition name="fade">
@@ -21,10 +22,10 @@
 </template>
 
 <script lang="ts">
-import {nextTick, ref} from 'vue'
+import {nextTick, PropType, ref} from 'vue'
 import {useEventBus} from '@vueuse/core'
 import {AppEvent} from '@/common/AppEvent'
-import {AppApi, ElectronUtils} from '@widget-js/core'
+import {AppApi, ElectronUtils, Widget} from '@widget-js/core'
 import {delay} from '@/utils/TimeUtils'
 import {useWebview} from '@/composition/use-webview'
 
@@ -40,6 +41,10 @@ export default {
     },
     configurable: {
       type: Boolean,
+      default: true
+    },
+    widget: {
+      type: Object as PropType<Widget>,
       default: true
     },
     backgroundThrottling: {

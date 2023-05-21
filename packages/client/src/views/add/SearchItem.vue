@@ -114,7 +114,7 @@ export default {
       const url = await WidgetApi.getWidgetConfigUrl(this.widget.name, widgetParams);
       console.log(url);
       if (url) {
-        await BrowserWindowApi.openUrl(url);
+        await BrowserWindowApi.openUrl(url, {partition: `persist:${this.widget.packageName}`});
       }
     },
     async islandSetting() {
