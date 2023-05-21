@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "lib/index.js",
   "author": "Neo Fu",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "watch": "tsup src/index.ts --dts --format esm,cjs --watch",
     "build:run": "npm run build && npm run widget",
     "prebuild": "",
-    "widget": "node ./lib/index.js"
+    "widget": "node ./lib/index.js",
+    "publish": "pnpm publish --no-git-checks"
   },
   "publishConfig": {
     "access": "public"
