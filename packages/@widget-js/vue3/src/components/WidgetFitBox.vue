@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     scale() {
-      return useWidgetScale(this.width,this.height,this.widgetWidth,this.widgetHeight);
+      return useWidgetScale(this.width, this.height, this.widgetWidth, this.widgetHeight);
     }
   }
 }

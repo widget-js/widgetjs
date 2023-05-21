@@ -17,29 +17,29 @@ export * from '@/composition/use-ipc';
 export * from '@/composition/use-app-broadcast';
 
 const WidgetJsPlugin: Plugin = {
-    install(app: App) {
-        app.component('WidgetEditDialog', WidgetEditDialog);
-        app.component('WidgetColorField', WidgetColorField);
-        app.component('WidgetDialogTitleBar', WidgetDialogTitleBar);
-        app.component('WidgetBaseDialog', WidgetBaseDialog);
-        app.component('WidgetCheckboxField', WidgetCheckboxField);
-        app.component('WidgetSliderField', WidgetSliderField);
-        app.component('WidgetTimeRangeField', WidgetTimeRangeField);
-        app.component('WidgetFitBox', WidgetFitBox);
-        app.component('BindShortcutField', BindShortcutField);
-        app.directive('drag-window-directive', dragWindowDirective)
-    },
+  install(app: App) {
+    app.component('WidgetEditDialog', WidgetEditDialog);
+    app.component('WidgetColorField', WidgetColorField);
+    app.component('WidgetDialogTitleBar', WidgetDialogTitleBar);
+    app.component('WidgetBaseDialog', WidgetBaseDialog);
+    app.component('WidgetCheckboxField', WidgetCheckboxField);
+    app.component('WidgetSliderField', WidgetSliderField);
+    app.component('WidgetTimeRangeField', WidgetTimeRangeField);
+    app.component('WidgetFitBox', WidgetFitBox);
+    app.component('BindShortcutField', BindShortcutField);
+    app.directive('drag-window-directive', dragWindowDirective)
+  },
 };
 
 export {
-    WidgetBaseDialog,
-    WidgetEditDialog,
-    WidgetCheckboxField,
-    WidgetColorField,
-    WidgetDialogTitleBar,
-    WidgetTimeRangeField,
-    WidgetSliderField,
-    WidgetJsPlugin,
-    WidgetFitBox,
-    BindShortcutField
+  WidgetBaseDialog,
+  WidgetEditDialog,
+  WidgetCheckboxField,
+  WidgetColorField,
+  WidgetDialogTitleBar,
+  WidgetTimeRangeField,
+  WidgetSliderField,
+  WidgetJsPlugin,
+  WidgetFitBox,
+  BindShortcutField
 }

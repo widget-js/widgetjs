@@ -8,15 +8,14 @@ import {useIpcListener} from "@/composition/use-ipc";
  * @param callback
  */
 export function useAppBroadcast(events: BroadcastEventType[], callback: (event: BroadcastEvent) => void) {
+  onMounted(() => {
+    BroadcastApi.register(...events)
+  });
+  onUnmounted(() => {
+    BroadcastApi.unregister(...events);
+  })
 
-    onMounted(() => {
-        BroadcastApi.register(...events)
-    });
-    onUnmounted(() => {
-        BroadcastApi.unregister(...events);
-    })
-
-    useIpcListener(Channel.BROADCAST, (...args: any[]) => {
-        callback(args[0] as BroadcastEvent);
-    })
+  useIpcListener(Channel.BROADCAST, (...args: any[]) => {
+    callback(args[0] as BroadcastEvent);
+  })
 }

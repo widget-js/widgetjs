@@ -1,4 +1,4 @@
-import {computed, ComputedRef, ref, Ref} from 'vue'
+import {computed, ComputedRef, reactive, ref, Ref} from 'vue'
 import {ElectronUtils, WidgetApiEvent, WidgetData, WidgetDataApi, WidgetParams} from "@widget-js/core";
 import {useAppBroadcast} from "@/composition/use-app-broadcast";
 
@@ -52,6 +52,8 @@ export function useWidget<T extends WidgetData>(type: {
   let widgetData = ref<T>(new type(widgetParams.name!)) as Ref<T>;
   if (option?.defaultData) {
     widgetData.value = option?.defaultData;
+    widgetData.value.name = widgetParams.name!;
+    widgetData.value.id = widgetParams.id!;
   }
   const dataLoaded = ref(false);
   const widgetName = option?.widgetName ?? widgetParams.name!;
@@ -84,8 +86,6 @@ export function useWidget<T extends WidgetData>(type: {
   } else {
     loadData();
   }
-
-
 
   useAppBroadcast([WidgetApiEvent.DATA_CHANGED], (broadcastEvent) => {
     if (broadcastEvent.payload.name == widgetParams.name) {
