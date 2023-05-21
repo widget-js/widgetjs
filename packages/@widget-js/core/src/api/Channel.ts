@@ -7,6 +7,7 @@ export enum Channel {
   APP = "channel::cn.widgetjs.core.app",
   DIALOG = "channel::cn.widgetjs.core.dialog",
   CLIPBOARD = "channel::cn.widgetjs.core.clipboard",
+  FILE = "channel::cn.widgetjs.core.file",
   SCREEN = "channel::cn.widgetjs.core.screen",
   SHORTCUT = "channel::cn.widgetjs.core.shortcut",
   LOG = "channel::cn.widgetjs.core.log",

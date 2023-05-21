@@ -26,6 +26,7 @@ export * from "./api/BroadcastApi";
 export * from "./api/AppApi";
 export * from "./api/DialogApi";
 export * from "./utils/ElectronUtils";
+export * from "./api/FileApi";
 export * from "./utils/UrlUtils";
 export * from "./router/query";
 export * from "./api/LogApi";
