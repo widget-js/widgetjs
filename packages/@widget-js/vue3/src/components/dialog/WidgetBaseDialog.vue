@@ -35,7 +35,7 @@ let {height} = useElementBounding(dialogWrapper);
 let heightInit = false;
 watch(height, (newHeight) => {
   if (newHeight > 0 && !heightInit) {
-    BrowserWindowApi.setBounds({height: newHeight})
+    BrowserWindowApi.setBounds({height: newHeight + 32})
     BrowserWindowApi.center()
     heightInit = true;
   }
