@@ -22,7 +22,7 @@
 
 import WidgetDialogTitleBar from "@/components/dialog/WidgetDialogTitleBar.vue";
 import {ref, watch} from "vue";
-import {useElementBounding} from "@vueuse/core";
+import {useDebounceFn, useElementBounding} from "@vueuse/core";
 import {BrowserWindowApi} from "@widget-js/core";
 
 const props = defineProps({
@@ -33,11 +33,17 @@ const props = defineProps({
 const dialogWrapper = ref<HTMLElement>()
 let {height} = useElementBounding(dialogWrapper);
 let heightInit = false;
-watch(height, (newHeight) => {
-  if (newHeight > 0 && !heightInit) {
-    BrowserWindowApi.setBounds({height: newHeight + 32})
-    BrowserWindowApi.center()
+let resizeWindow = useDebounceFn((newHeight) => {
+  BrowserWindowApi.setBounds({height: newHeight + 32})
+  if (!heightInit) {
+    //只有第一次初始化时才居中
+    BrowserWindowApi.center();
     heightInit = true;
+  }
+}, 100);
+watch(height, (newHeight) => {
+  if (newHeight > 0) {
+    resizeWindow(newHeight)
   }
 })
 
