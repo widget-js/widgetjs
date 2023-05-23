@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/core",
-  "version": "0.5.21",
+  "version": "0.5.24",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -10,7 +10,6 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "scripts": {
-    "prepublishOnly": "pinst --disable",
     "test": "jest --no-cache --runInBand",
     "test:cov": "jest --coverage --no-cache --runInBand",
     "build": "npm run build:esm && npm run build:types && npm run build:cjs && npm  run build:umd",

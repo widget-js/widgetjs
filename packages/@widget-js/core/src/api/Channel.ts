@@ -15,4 +15,5 @@ export enum Channel {
   DEVICE = "channel::cn.widgetjs.core.device",
   MOUSE = "channel::cn.widgetjs.core.mouse",
   KEYBOARD = "channel::cn.widgetjs.core.keyboard",
+  STORE = "channel::cn.widgetjs.core.store",
 }

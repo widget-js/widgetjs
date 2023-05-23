@@ -25,6 +25,7 @@ export * from "./api/ShortcutApi";
 export * from "./api/BroadcastApi";
 export * from "./api/AppApi";
 export * from "./api/DialogApi";
+export * from "./api/StoreApi";
 export * from "./utils/ElectronUtils";
 export * from "./api/FileApi";
 export * from "./utils/UrlUtils";
