@@ -17,6 +17,10 @@ interface IBrowserWindowApi {
 
   startDraggingWindow(): Promise<void>;
 
+  minimize(): Promise<void>;
+
+  maximize(): Promise<void>;
+
   stopDraggingWindow(): Promise<void>;
 
   setAlwaysOnTop(alwaysOnTop: boolean): Promise<void>;
@@ -174,6 +178,14 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async getMaximumSize(): Promise<number[]> {
     return await this.invokeMethod('getMaximumSize');
+  }
+
+  async minimize(): Promise<void> {
+    return await this.invokeMethod('minimize');
+  }
+
+  async maximize(): Promise<void> {
+    return await this.invokeMethod('maximize');
   }
 
 }
