@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/core",
-  "version": "0.5.25",
+  "version": "0.5.27",
   "description": "",
   "publishConfig": {
     "access": "public"

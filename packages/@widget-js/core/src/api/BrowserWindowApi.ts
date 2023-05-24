@@ -19,6 +19,12 @@ interface IBrowserWindowApi {
 
   minimize(): Promise<void>;
 
+  restore(): Promise<void>;
+
+  isMinimized(): Promise<boolean>;
+
+  isMaximized(): Promise<boolean>;
+
   maximize(): Promise<void>;
 
   stopDraggingWindow(): Promise<void>;
@@ -186,6 +192,18 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async maximize(): Promise<void> {
     return await this.invokeMethod('maximize');
+  }
+
+  async isMaximized(): Promise<boolean> {
+    return await this.invokeMethod('isMinimized');
+  }
+
+  async isMinimized(): Promise<boolean> {
+    return await this.invokeMethod('isMinimized');
+  }
+
+  async restore(): Promise<void> {
+    return await this.invokeMethod('restore');
   }
 
 }
