@@ -37,6 +37,8 @@ interface IBrowserWindowApi {
 
   moveTop(): Promise<void>;
 
+  unmaximize(): Promise<void>;
+
   openDevTools(): Promise<void>;
 
   setPosition(options: SetPositionOptions): Promise<void>;
@@ -195,7 +197,7 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
   }
 
   async isMaximized(): Promise<boolean> {
-    return await this.invokeMethod('isMinimized');
+    return await this.invokeMethod('isMaximized');
   }
 
   async isMinimized(): Promise<boolean> {
@@ -204,6 +206,10 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async restore(): Promise<void> {
     return await this.invokeMethod('restore');
+  }
+
+  async unmaximize(): Promise<void> {
+    return await this.invokeMethod('unmaximize');
   }
 
 }
