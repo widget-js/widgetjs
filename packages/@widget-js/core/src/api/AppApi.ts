@@ -1,4 +1,3 @@
-import {ElectronUtils} from "../utils/ElectronUtils";
 import {Channel} from "./Channel";
 import {BaseApi} from "./BaseApi";
 
@@ -14,6 +13,8 @@ interface IAppApi {
   openAddWidgetWindow(): Promise<void>
 
   openSettingWindow(): Promise<void>
+
+  getIconFile(): Promise<string>
 }
 
 type AppApiMethods = keyof IAppApi;
@@ -23,6 +24,10 @@ enum AppApiEvent {
 }
 
 class AppApiImpl extends BaseApi<AppApiMethods> implements IAppApi {
+  async getIconFile(): Promise<string> {
+    return this.invokeMethod('getIconFile');
+  }
+
   getChannel(): string {
     return Channel.APP;
   }
