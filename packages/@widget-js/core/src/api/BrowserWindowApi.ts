@@ -39,6 +39,8 @@ interface IBrowserWindowApi {
 
   unmaximize(): Promise<void>;
 
+  reload(): Promise<void>;
+
   openDevTools(): Promise<void>;
 
   setPosition(options: SetPositionOptions): Promise<void>;
@@ -60,6 +62,8 @@ interface IBrowserWindowApi {
   existsByUrl(url: string): Promise<boolean>;
 
   getMaximumSize(): Promise<number[]>;
+
+  setZoomLevel(level: number): Promise<void>;
 }
 
 type BrowserWindowApiMethods = keyof IBrowserWindowApi;
@@ -210,6 +214,14 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async unmaximize(): Promise<void> {
     return await this.invokeMethod('unmaximize');
+  }
+
+  async setZoomLevel(level: number): Promise<void> {
+    return await this.invokeMethod('setZoomLevel');
+  }
+
+  async reload(): Promise<void> {
+    return await this.invokeMethod('reload');
   }
 
 }
