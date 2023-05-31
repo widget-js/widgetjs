@@ -22,8 +22,9 @@
 
 import WidgetDialogTitleBar from "@/components/dialog/WidgetDialogTitleBar.vue";
 import {ref, watch} from "vue";
-import {useDebounceFn, useElementBounding} from "@vueuse/core";
+import {useElementBounding} from "@vueuse/core";
 import {BrowserWindowApi} from "@widget-js/core";
+import {useDebounceFn} from "@vueuse/shared";
 
 const props = defineProps({
   title: {

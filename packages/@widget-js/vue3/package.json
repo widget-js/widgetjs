@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/vue3",
-  "version": "0.5.23",
+  "version": "0.5.29",
   "publishConfig": {
     "access": "public"
   },
@@ -14,12 +14,15 @@
     "addscope": "node tools/packagejson name @widget-js/vue3",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "publish": "npm publish --no-git-checks"
+    "publish:pnpm": "pnpm publish --no-git-checks --registry=https://registry.npmjs.org/"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
+    "@vueuse/core": "^9.4.0",
+    "@vueuse/integrations": "^9.6.0",
+    "@vueuse/shared": "^10.1.2",
     "@widget-js/core": "workspace:*",
     "element-plus": "^2.3.4"
   },
@@ -35,8 +38,6 @@
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/cli-shared-utils": "^5.0.8",
-    "@vueuse/core": "^9.4.0",
-    "@vueuse/integrations": "^9.6.0",
     "jest-mock": "^29.3.1",
     "json5": "^2.2.3",
     "pinst": "^3.0.0",
