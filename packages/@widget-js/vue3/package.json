@@ -14,7 +14,7 @@
     "addscope": "node tools/packagejson name @widget-js/vue3",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "publish:pnpm": "pnpm publish --no-git-checks --registry=https://registry.npmjs.org/"
+    "pnpm:publish": "pnpm publish --no-git-checks --registry=https://registry.npmjs.org/"
   },
   "files": [
     "dist"

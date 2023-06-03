@@ -1,12 +1,11 @@
-import { Option, program } from "commander";
+import {Option, program} from "commander";
 import fs from "fs";
 import path from "path";
 import * as process from "process";
 
-import { fileURLToPath } from "url";
+import {fileURLToPath} from "url";
 import figlet from "figlet";
 import gradient from "gradient-string";
-import consola from "consola";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +13,7 @@ const __dirname = path.dirname(__filename);
 const packageJsonPath = path.join(__dirname, "../package.json");
 let cliPackage = JSON.parse(fs.readFileSync(packageJsonPath).toString());
 
-console.log(gradient.pastel.multiline(figlet.textSync("widget-cli", { horizontalLayout: "full" })));
+console.log(gradient.pastel.multiline(figlet.textSync("widget-cli", {horizontalLayout: "full"})));
 program.version(`@widget-js/cli ${cliPackage.version}`).usage("<command> [options]");
 program
   .command("create")
@@ -24,13 +23,15 @@ program
     await createWidget.default();
   });
 
+let dependenciesOption = new Option("-t, --type <type>").choices(["remote", "local"]);
+
 program
-  .command("upgrade")
-  .description("升级依赖")
-  .action(async () => {
-    const upgrade = await import("./upgrade/upgrade");
-    const instance = new upgrade.Upgrade();
-    await instance.start()
+  .command("dependencies")
+  .description("将@widget-js依赖版本设置成远程或者本地")
+  .addOption(dependenciesOption)
+  .action(async (options) => {
+    let dependencies = await import("./dependencies/index");
+    await dependencies.default(options);
   });
 
 program

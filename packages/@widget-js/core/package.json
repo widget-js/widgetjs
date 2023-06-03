@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/core",
-  "version": "0.5.29",
+  "version": "0.6.3",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -21,7 +21,7 @@
     "postbuild": "rimraf ../../electron/node_modules/@widget-js/core/",
     "package": "npm run build && npm pack",
     "addscope": "node tools/packagejson name @widget-js/core",
-    "pnpm:publish": "pnpm publish --no-git-checks"
+    "pnpm:publish": "npm run build && pnpm publish --no-git-checks"
   },
   "author": "Neo Fu <rtugeek@gmail.com>",
   "license": "MIT",

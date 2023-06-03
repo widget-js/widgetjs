@@ -1,9 +1,0 @@
-[submodule "packages/@widget-js/widgets"]
-	path = packages/@widget-js/widgets
-	url = https://github.com/widget-js/widgets.git
-[submodule "packages/@widget-js/hotspot"]
-	path = packages/@widget-js/hotspot
-	url = https://github.com/widget-js/hotspot.git
-[submodule "packages/@widget-js/chatgpt"]
-	path = packages/@widget-js/chatgpt
-	url = https://github.com/widget-js/chatgpt.git

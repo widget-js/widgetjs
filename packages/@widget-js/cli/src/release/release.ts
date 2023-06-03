@@ -15,7 +15,6 @@ async function delay(time: number) {
 }
 
 const release = async (options: any) => {
-  console.log()
   if (options.type == 'ftp') {
     await ftpUpload()
     return
