@@ -14,6 +14,7 @@ type WidgetPackageOptions = {
   entry: string;
   remoteEntry?: string;
   remotePackage?: string;
+  icon?: string;
   hash: boolean;
   url: string
   lang?: LanguageCode;
@@ -56,6 +57,10 @@ export class WidgetPackage {
   readonly remoteEntry?: string;
   readonly remotePackage?: string;
   /**
+   * 组件包图标
+   */
+  readonly icon?: string;
+  /**
    * Hash路由模式，默认为true
    */
   readonly hash: boolean = true;
@@ -81,6 +86,7 @@ export class WidgetPackage {
     this.remotePackage = options.remotePackage;
     this.hash = options.hash;
     this.url = options.url;
+    this.icon = options.icon;
     this.devOptions = options.devOptions;
     if (options.widgets) {
       for (let widget of options.widgets) {
