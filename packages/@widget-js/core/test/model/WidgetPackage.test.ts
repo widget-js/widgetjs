@@ -1,4 +1,5 @@
 import {WidgetPackage} from "../../src";
+import * as fs from 'fs';
 
 test('parseObject', () => {
     const widget = WidgetPackage.parseObject({
@@ -19,6 +20,12 @@ test('parseObject', () => {
 
     expect(widget.name).toBe("test");
     expect(widget.url).toBe("/widget");
+})
+test('parseJSON', async () => {
+
+  let json = fs.readFileSync('./test/model/widget.json').toString();
+  let widgetPackage = WidgetPackage.parseJSON(json);
+  expect(widgetPackage.widgets[0].getTitle()).toBe("bilibili热搜");
 })
 
 

@@ -2,8 +2,8 @@ import {Widget, WidgetKeyword} from "../../src";
 
 test("stringify", () => {
     const name = "com.wisdom.widgets.clock";
-    const title = {"zh": "时钟"};
-    const description = {"zh": "带动画的时钟"};
+    const title = {"zh-CN": "时钟"};
+    const description = {"zh-CN": "带动画的时钟"};
     const keywords = [WidgetKeyword.RECOMMEND];
     const url = "/widget/clock";
     const configUrl = "/widget/config/clock";
@@ -13,7 +13,7 @@ test("stringify", () => {
         title: title,
         description: description,
         keywords: keywords,
-        lang: "zh",
+        lang: "zh-CN",
         width: 2,
         height: 2,
         minWidth: 2,
@@ -25,8 +25,8 @@ test("stringify", () => {
 })
 test("stringify-array", () => {
     const name = "com.wisdom.widgets.clock";
-    const title = {"zh": "时钟"};
-    const description = {"zh": "带动画的时钟"};
+    const title = {"zh-CN": "时钟"};
+    const description = {"zh-CN": "带动画的时钟"};
     const keywords = [WidgetKeyword.RECOMMEND];
     const url = "/widget/clock";
     const configUrl = "/widget/config/clock";
@@ -35,7 +35,7 @@ test("stringify-array", () => {
         title: title,
         description: description,
         keywords: keywords,
-        lang: "zh",
+        lang: "zh-CN",
         width: 2, routes: [],
         height: 2,
         minWidth: 2,
@@ -72,9 +72,9 @@ test("parseJSON", () => {
   }`;
     let widget = Widget.parseJSON(json);
     console.log(widget);
-    console.log(widget.getTitle("zh"));
+    console.log(widget.getTitle("zh-CN"));
     console.log(widget.getTitle());
-    console.log(widget.getDescription("zh"));
+    console.log(widget.getDescription("zh-CN"));
     console.log(widget.getDescription());
 })
 

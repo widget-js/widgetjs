@@ -117,6 +117,25 @@ export class WidgetPackage {
       version: ""
     });
     Object.assign(widgetPackage, obj);
+    const widgets: Widget[] = []
+    if (widgetPackage.widgets) {
+      for (let jsonWidget of widgetPackage.widgets) {
+        let widget = new Widget({
+          description: {"zh-CN": ""},
+          height: 0,
+          keywords: [],
+          lang: "zh-CN",
+          name: '',
+          routes: [],
+          title: {"zh-CN": ""},
+          width: 0
+        });
+        Object.assign(widget, jsonWidget);
+        widgets.push(widget)
+      }
+    }
+    widgetPackage.widgets.splice(0, widgetPackage.widgets.length)
+    widgetPackage.widgets.push(...widgets)
     return widgetPackage;
   }
 

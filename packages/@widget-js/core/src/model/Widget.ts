@@ -5,10 +5,10 @@ import {getTextByLanguageCode} from "../utils/LanguageUtils";
 
 type WidgetOptions = {
   name: string,
-  title: { [key: string]: string },
-  description: { [key: string]: string },
+  title: LanguageTextMap,
+  description: LanguageTextMap,
   keywords: WidgetKeyword[],
-  lang: string,
+  lang: LanguageCode,
   width: number,
   height: number,
   maxWidth?: number,
@@ -51,7 +51,7 @@ export class Widget {
   /**
    * 组件默认语言
    */
-  readonly lang: string = "zh";
+  readonly lang: LanguageCode = "zh-CN";
   readonly width: number;
   packageName?: string | null;
   readonly height: number;
@@ -144,7 +144,7 @@ export class Widget {
       description: {},
       height: 0,
       keywords: [],
-      lang: "",
+      lang: "zh-CN",
       name: "",
       routes: [],
       title: {},
@@ -164,9 +164,9 @@ export class Widget {
 
   isResizable(): boolean {
     return !(this.minWidth == this.width &&
-      this.maxWidth == this.width &&
-      this.minHeight == this.height &&
-      this.maxHeight == this.height);
+        this.maxWidth == this.width &&
+        this.minHeight == this.height &&
+        this.maxHeight == this.height);
   }
 
   isSupportBackground(): boolean {

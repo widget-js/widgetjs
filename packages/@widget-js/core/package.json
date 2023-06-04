@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/core",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -42,6 +42,7 @@
     "@babel/node": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
     "@types/jest": "^29.2.3",
+    "@types/node": "^20.2.5",
     "@types/urijs": "^1.19.19",
     "babel-core": "^6.26.3",
     "electron": "^23.2.0",
@@ -52,6 +53,7 @@
     "rimraf": "^4.4.1",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0"

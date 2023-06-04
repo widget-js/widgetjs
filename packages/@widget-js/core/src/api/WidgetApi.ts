@@ -3,13 +3,7 @@ import {WidgetPackage} from "../model/WidgetPackage";
 import {Channel} from "./Channel";
 import {WidgetParams} from "../model/WidgetParams";
 import {UrlUtils} from "../utils/UrlUtils";
-import {WidgetData} from "../model/WidgetData";
-import {BroadcastEvent} from "../model/event/BroadcastEvent";
-import {BroadcastApi} from "./BroadcastApi";
-import localforage from "localforage";
 import {BaseApi} from "./BaseApi";
-import {HostedMode} from "../model/HostedMode";
-import {SaveWidgetOption} from "./WidgetDataApi";
 
 
 interface IWidgetApi {
