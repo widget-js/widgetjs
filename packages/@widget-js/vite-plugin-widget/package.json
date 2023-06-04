@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/vite-plugin-widget",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --dts --format cjs,esm",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pnpm:publish": "pnpm run build && pnpm publish --no-git-checks"
   },
   "keywords": [
     "vite",
