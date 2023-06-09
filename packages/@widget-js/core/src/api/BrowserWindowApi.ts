@@ -122,7 +122,11 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
   }
 
   async openUrl(url: string, option?: OpenUrlOptions) {
-    await this.invokeMethod('openUrl', url, option);
+    if (ElectronUtils.hasElectronApi()) {
+      await this.invokeMethod('openUrl', url, option);
+    } else {
+      window.open(url, '_blank')
+    }
   }
 
 
