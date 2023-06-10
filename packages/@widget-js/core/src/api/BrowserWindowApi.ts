@@ -53,6 +53,8 @@ interface IBrowserWindowApi {
 
   setResizable(resizable: boolean): Promise<void>;
 
+  setMovable(movable: boolean): Promise<void>;
+
   getBounds(): Promise<Rectangle>;
 
   setBounds(bounds: Partial<Rectangle>, animate: boolean): Promise<void>;
@@ -226,6 +228,10 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async reload(): Promise<void> {
     return await this.invokeMethod('reload');
+  }
+
+  async setMovable(movable: boolean): Promise<void> {
+    return await this.invokeMethod('setMovable', movable);
   }
 
 }
