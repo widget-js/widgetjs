@@ -4,7 +4,7 @@ import {Channel} from './Channel';
 type BaseType = string | number | boolean
 
 interface IStoreApi {
-  get<T extends BaseType>(key: string): Promise<T | null>;
+  get<T extends BaseType>(key: string, defaultValue?: T): Promise<T | null>;
 
   set(key: string, value: BaseType | object): Promise<string>;
 
@@ -24,8 +24,12 @@ class StoreApiImpl extends BaseApi<StoreApiMethods> implements IStoreApi {
     return this.invokeMethod('delete', key);
   }
 
-  async get<T extends BaseType>(key: string): Promise<T | null> {
-    return this.invokeMethod('get', key);
+  async get<T extends BaseType>(key: string, defaultValue?: T): Promise<T | null> {
+    const result = await this.invokeMethod('get', key);
+    if (result == null && defaultValue != undefined) {
+      return defaultValue;
+    }
+    return result
   }
 
   async getObject<T>(key: string, defaultValue?: T): Promise<T | undefined> {
