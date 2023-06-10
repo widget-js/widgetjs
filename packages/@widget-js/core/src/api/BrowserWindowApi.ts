@@ -40,7 +40,7 @@ interface IBrowserWindowApi {
   unmaximize(): Promise<void>;
 
   reload(): Promise<void>;
-
+  setSize(width: number, height: number, animate?: boolean): Promise<void>;
   openDevTools(): Promise<void>;
 
   setPosition(options: SetPositionOptions): Promise<void>;
@@ -232,6 +232,10 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async setMovable(movable: boolean): Promise<void> {
     return await this.invokeMethod('setMovable', movable);
+  }
+
+  async setSize(width: number, height: number, animate?: boolean): Promise<void> {
+    return this.invokeMethod('setSize', width, height, animate);
   }
 
 }
