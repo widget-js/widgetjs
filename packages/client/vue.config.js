@@ -16,7 +16,6 @@ module.exports = defineConfig({
         resolvers: [ElementPlusResolver()],
       }),
     ],
-
   },
   pluginOptions: {},
 })

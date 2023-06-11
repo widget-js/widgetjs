@@ -48,6 +48,9 @@ WidgetApi.getWidgetPackages().then((packages) => {
     const newWidget: Array<Widget> = [];
     for (let widget of widgets) {
       if (widgetPackages.has(widget.packageName ?? "")) {
+        if (widget.name == 'cn.widgetjs.widgets.dynamic_island') {
+          continue
+        }
         newWidget.push(widget);
       } else {
         console.error(`${widget.name}'s package not exists:${widget.packageName}`)
@@ -67,7 +70,7 @@ onMounted(async () => {
 <style lang="scss">
 @import "@/assets/scss/theme.scss";
 
-.dialog-wrapper{
+.dialog-wrapper {
   .main {
     background-color: $fill-color-default;
   }

@@ -34,7 +34,7 @@ import {
   BrowserWindowApi,
   Channel,
   ElectronUtils,
-  HostedMode,
+  HostedMode, LogApi,
   Widget,
   WidgetApi,
   WidgetPackage,
@@ -122,8 +122,9 @@ export default {
       widgetParams.id = "1";
       widgetParams.name = 'cn.widgetjs.widgets.dynamic_island'
       const url = await WidgetApi.getWidgetConfigUrl(widgetParams.name, widgetParams);
+      LogApi.log(this.widget.packageName)
       if (url) {
-        await BrowserWindowApi.openUrl(url);
+        await BrowserWindowApi.openUrl(url, {partition: `persist:${this.widget.packageName}`});
       }
     },
     async onClickAddNormal() {
