@@ -37,7 +37,7 @@ class StoreApiImpl extends BaseApi<StoreApiMethods> implements IStoreApi {
     if (result) {
       return JSON.parse(result)
     }
-    if (defaultValue) {
+    if (defaultValue != undefined) {
       return defaultValue;
     }
     return undefined;
