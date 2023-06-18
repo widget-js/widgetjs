@@ -8,14 +8,21 @@
   "author": "Neo Fu <rtugeek@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "graph": " npx nx graph"
+    "graph": " npx nx graph",
+    "docs:dev": "vitepress dev packages/@widget-js/docs",
+    "docs:build": "vitepress build packages/@widget-js/docs",
+    "docs:preview": "vitepress preview packages/@widget-js/docs"
   },
   "devDependencies": {
-    "consola": "^2.15.3"
+    "@unocss/postcss": "^0.53.1",
+    "consola": "^2.15.3",
+    "vitepress": "1.0.0-beta.2"
   },
   "dependencies": {
+    "@antfu/ni": "^0.21.4",
+    "@esbuild/android-arm": "^0.17.18",
     "typescript": "^4.9.5",
-    "@esbuild/android-arm": "^0.17.18"
+    "unocss": "^0.51.13"
   },
   "pnpm": {
     "peerDependencyRules": {
