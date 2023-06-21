@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/vue3",
-  "version": "0.5.29",
+  "version": "0.6.21",
   "publishConfig": {
     "access": "public"
   },

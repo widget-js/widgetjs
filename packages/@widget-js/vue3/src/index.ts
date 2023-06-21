@@ -10,11 +10,13 @@ import WidgetSliderField from "@/components/form/WidgetSliderField.vue";
 import WidgetFitBox from "@/components/WidgetFitBox.vue";
 import BindShortcutField from "@/components/form/BindShortcutField.vue";
 import dragWindowDirective from "@/directive/drag-window-directive";
+import WidgetWrapper from "@/components/WidgetWrapper.vue";
 
 export * from '@/model/WidgetConfigOption';
 export * from '@/composition/use-widget';
 export * from '@/composition/use-ipc';
 export * from '@/composition/use-app-broadcast';
+
 
 const WidgetJsPlugin: Plugin = {
   install(app: App) {
@@ -27,11 +29,14 @@ const WidgetJsPlugin: Plugin = {
     app.component('WidgetTimeRangeField', WidgetTimeRangeField);
     app.component('WidgetFitBox', WidgetFitBox);
     app.component('BindShortcutField', BindShortcutField);
+    app.component('WidgetWrapper', WidgetWrapper);
     app.directive('drag-window-directive', dragWindowDirective)
   },
 };
 
+
 export {
+  WidgetJsPlugin,
   WidgetBaseDialog,
   WidgetEditDialog,
   WidgetCheckboxField,
@@ -39,7 +44,7 @@ export {
   WidgetDialogTitleBar,
   WidgetTimeRangeField,
   WidgetSliderField,
-  WidgetJsPlugin,
+  WidgetWrapper,
   WidgetFitBox,
   BindShortcutField
 }

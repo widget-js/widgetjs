@@ -32,5 +32,6 @@ declare module '@vue/runtime-core' {
     WidgetFitBox: typeof import('./src/components/WidgetFitBox.vue')['default']
     WidgetSliderField: typeof import('./src/components/form/WidgetSliderField.vue')['default']
     WidgetTimeRangeField: typeof import('./src/components/form/WidgetTimeRangeField.vue')['default']
+    WidgetWrapper: typeof import('./src/components/WidgetWrapper.vue')['default']
   }
 }
