@@ -21,7 +21,7 @@ hero:
       link: https://widget-fun.oss-cn-hangzhou.aliyuncs.com/version/installer.exe
     - theme: alt
       text: 查看源码
-      link: https://github.com/widget-js/widgetjs
+      link: https://github.com/widget-js/widgets
   
 features:
   - icon: 🚀
