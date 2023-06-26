@@ -40,7 +40,9 @@ interface IBrowserWindowApi {
   unmaximize(): Promise<void>;
 
   reload(): Promise<void>;
+
   setSize(width: number, height: number, animate?: boolean): Promise<void>;
+
   openDevTools(): Promise<void>;
 
   setPosition(options: SetPositionOptions): Promise<void>;
@@ -87,6 +89,9 @@ interface SetPositionOptions {
 enum BrowserWindowApiEvent {
   BLUR = "event::cn.widgetjs.core.browser-window.blur",
   FOCUS = "event::cn.widgetjs.core.browser-window.focus",
+  SNAP_TO_EDGE = "event::cn.widgetjs.core.browser-window.snap_to_edge",
+  RESIZE = "event::cn.widgetjs.core.browser-window.resize",
+  CANCEL_SNAP_TO_EDGE = "event::cn.widgetjs.core.browser-window.cancel_snap_to_edge",
 }
 
 export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> implements IBrowserWindowApi {

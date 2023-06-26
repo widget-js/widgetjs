@@ -1,5 +1,4 @@
 import {HostedMode} from "../HostedMode";
-import {Widget} from "../Widget";
 
 export interface IHostedWidget {
     hostedMode: HostedMode;

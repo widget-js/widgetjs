@@ -7,6 +7,7 @@ export * from "./model/AppNotification";
 export * from "./model/HostedMode";
 export * from "./model/HostedWidget";
 export * from "./model/interface/Rectangle";
+export * from "./model/msic/graphics";
 export * from "./model/event/NativeKeyboardEvent";
 export * from "./model/event/AppMouseEvent";
 export * from "./model/WidgetPackage";
