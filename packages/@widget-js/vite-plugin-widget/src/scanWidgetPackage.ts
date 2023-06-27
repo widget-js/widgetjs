@@ -6,7 +6,7 @@ import {transpileCodeString} from "./utils";
 import {WidgetPackage} from "@widget-js/core";
 
 
-const scanWidgetPackage = (): WidgetPackage => {
+const scanWidgetPackage = async (): Promise<WidgetPackage> => {
   // Read widget.ts first
   let tsFile = path.join(process.cwd(), 'widget.ts');
   let widgetPackage: WidgetPackage;
@@ -17,9 +17,9 @@ const scanWidgetPackage = (): WidgetPackage => {
     const json = fs.readFileSync(path.join(process.cwd(), 'widget.json')).toString();
     widgetPackage = JSON.parse(json);
   }
-  scanWidgets().forEach((it) => {
-    widgetPackage["widgets"].push(it);
-  })
+  const widgets = await scanWidgets();
+  widgetPackage["widgets"].push(...widgets);
+
   return widgetPackage;
 }
 

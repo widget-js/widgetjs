@@ -3,11 +3,11 @@ import registerWidgetPackage from "./registerWidgetPackage";
 import consola from "consola";
 import fs from "fs";
 import path from "path";
-import {ResolvedConfig, ViteDevServer} from "vite"
-import {WidgetPackage} from "../../core";
+import {HmrContext, ResolvedConfig, ViteDevServer} from "vite"
+import {WidgetPackage} from "@widget-js/core";
 
 const register = async () => {
-  const widgetPackage = scanWidgetPackage();
+  const widgetPackage = await scanWidgetPackage();
   consola.info("Register widgets：", new Date());
   await registerWidgetPackage(widgetPackage);
 }
@@ -24,8 +24,8 @@ const ViteWidget = (options?: ViteWidgetOptions) => {
     consola.info(`${fileName} generated`);
   }
 
-  function generateWidgetPackageJson(outputDir: string) {
-    const widgetPackage = scanWidgetPackage();
+  async function generateWidgetPackageJson(outputDir: string) {
+    const widgetPackage = await scanWidgetPackage();
     generateJsonFile(outputDir, 'widget.json', widgetPackage);
     if (options?.fullNameFile) {
       let fullName = `${widgetPackage.name}.json`;
@@ -38,14 +38,15 @@ const ViteWidget = (options?: ViteWidgetOptions) => {
     async configureServer(_server: ViteDevServer) {
       await register();
     },
-    configResolved(resolvedConfig: ResolvedConfig) {
+    async configResolved(resolvedConfig: ResolvedConfig) {
       if (resolvedConfig.publicDir) {
-        generateWidgetPackageJson(resolvedConfig.publicDir)
+        await generateWidgetPackageJson(resolvedConfig.publicDir)
       }
     },
-    // @ts-ignore
-    async handleHotUpdate({server}) {
-      await register();
+    async handleHotUpdate({file}: HmrContext) {
+      if (file.endsWith('widget.ts')) {
+        await register();
+      }
     }
   }
 }
