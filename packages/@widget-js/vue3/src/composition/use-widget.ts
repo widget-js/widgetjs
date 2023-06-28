@@ -1,8 +1,8 @@
-import {computed, ComputedRef, reactive, ref, Ref} from 'vue'
+import {computed, ComputedRef, ref, Ref} from 'vue-demi'
 import {ElectronUtils, WidgetApiEvent, WidgetData, WidgetDataApi, WidgetParams} from "@widget-js/core";
 import {useAppBroadcast} from "@/composition/use-app-broadcast";
 
-interface UseWidgetOption<T extends WidgetData> {
+export interface UseWidgetOption<T extends WidgetData> {
   onDataLoaded?: (data?: T) => void,
   /**
    * 在使用浏览器调试时使用，必传参数有：id,name,widthPx,heightPx
@@ -27,7 +27,7 @@ interface UseWidgetOption<T extends WidgetData> {
   widgetName?: string;
 }
 
-interface UseWidgetReturn<T extends WidgetData> {
+export interface UseWidgetReturn<T extends WidgetData> {
   widgetParams: WidgetParams;
   widgetData: Ref<T>;
   dataLoaded: Ref<boolean>;

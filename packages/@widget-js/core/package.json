@@ -1,6 +1,6 @@
 {
   "name": "@widget-js/core",
-  "version": "0.6.24",
+  "version": "0.6.28",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -13,12 +13,10 @@
     "test": "jest --no-cache --runInBand",
     "test:cov": "jest --coverage --no-cache --runInBand",
     "build": "npm run build:esm && npm run build:types && npm run build:cjs && npm  run build:umd",
-    "build:update": "npm run build && yarn --cwd ../../../ upgrade @widget-js/core && yarn --cwd ../../../electron upgrade @widget-js/core",
     "build:cjs": "node tools/cleanup cjs && tsc -p config/tsconfig.cjs.json",
     "build:esm": "node tools/cleanup esm && tsc -p config/tsconfig.esm.json",
     "build:umd": "node tools/cleanup umd && webpack --config config/webpack.config.js",
     "build:types": "node tools/cleanup types && tsc -p config/tsconfig.types.json",
-    "postbuild": "rimraf ../../electron/node_modules/@widget-js/core/",
     "package": "npm run build && npm pack",
     "addscope": "node tools/packagejson name @widget-js/core",
     "pnpm:publish": "npm run build && pnpm publish --no-git-checks"

@@ -68,6 +68,8 @@ interface IBrowserWindowApi {
   getMaximumSize(): Promise<number[]>;
 
   setZoomLevel(level: number): Promise<void>;
+
+  isFocused(): Promise<boolean>;
 }
 
 type BrowserWindowApiMethods = keyof IBrowserWindowApi;
@@ -241,6 +243,10 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async setSize(width: number, height: number, animate?: boolean): Promise<void> {
     return this.invokeMethod('setSize', width, height, animate);
+  }
+
+  async isFocused(): Promise<boolean> {
+    return this.invokeMethod('isFocused');
   }
 
 }

@@ -72,7 +72,7 @@ export class WidgetPackage {
    */
   readonly url!: string
   readonly widgets: Widget[] = [];
-  readonly devOptions?: DevOptions;
+  devOptions?: DevOptions;
 
   constructor(options: WidgetPackageOptions) {
     this.name = options.name;
@@ -172,4 +172,5 @@ export type DevOptions = {
   folder?: string;
   route?: boolean;
   devUrl?: string;
+  remoteEntry?: string;
 }
