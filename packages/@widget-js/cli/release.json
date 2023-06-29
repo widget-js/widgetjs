@@ -1,21 +1,7 @@
 {
   "fileMap": [
-    {
-      "src": "./dist/youlu-${version}-setup-win-ia32.exe",
-      "dest": "/www/wwwroot/download.tool-vip.com/youlu/youlu.exe",
-      "order": 0
-    },
-    {
-      "src": ".gitignore",
-      "dest": "/www/wwwroot/template/aa/.gitignore"
-    },
-    {
-      "src": "/www/wwwroot/template/aa/.gitignore",
-      "dest": "/www/wwwroot/template/bbb/.gitignorexxx",
-      "remoteCopy": true
-    }
   ],
   "ftpConfig": {
-    "host": "youlu"
+    "host": ["youlu","itime"]
   }
 }

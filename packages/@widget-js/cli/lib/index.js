@@ -27,7 +27,7 @@ program.command("build").description("\u6267\u884C\u7F16\u8BD1\u4EFB\u52A1").act
 });
 var typeOption = new Option("-t, --type <type>").choices(["ftp", "oss"]);
 program.command("release").description("\u901A\u8FC7FTP/OSS\u53D1\u5E03\u6587\u4EF6\uFF0C\u4EC5\u5185\u90E8\u4F7F\u7528").addOption(typeOption).action(async (options, command) => {
-  let release = await import("./release-U3O2EENP.js");
+  let release = await import("./release-MNILEHXP.js");
   await release.default(options);
 });
 program.parse(process.argv);

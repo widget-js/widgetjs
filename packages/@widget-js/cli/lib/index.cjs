@@ -496,7 +496,65 @@ async function checkParentDir(ftpClient, file, onMkdir) {
     await ftpClient.mkdir(dir, true);
   }
 }
-function ftpUpload() {
+async function runSSH(sshConfig, releaseConfig) {
+  import_consola3.default.info("run ssh:", sshConfig);
+  const answer = await import_inquirer3.default.prompt([{ type: "password", name: "password", mask: "*", message: "Enter key pair password" }]);
+  let ftpClient = new import_ssh2_sftp_client.default();
+  const port = sshConfig["Port"];
+  const key = import_fs7.default.readFileSync(import_path3.default.resolve(import_os.default.homedir(), ".ssh/id_rsa"));
+  const spinner3 = (0, import_ora4.default)("Connecting");
+  try {
+    spinner3.start();
+    await ftpClient.connect({
+      host: sshConfig["HostName"],
+      port: port ? parseInt(port) : 22,
+      username: sshConfig["User"],
+      passphrase: answer.password,
+      privateKey: key
+    });
+    releaseConfig.fileMap.sort((it1, it2) => (it1.order ?? 0) - (it2.order ?? 0));
+    for (let item of releaseConfig.fileMap) {
+      if (typeof item.src == "string") {
+        if (item.remoteCopy) {
+          await checkParentDir(ftpClient, item.dest, (dir) => {
+            spinner3.warn(`Create Dir: ${dir}`);
+          });
+          let destExists = await ftpClient.exists(item.dest);
+          if (destExists) {
+            spinner3.warn(`Delete exists file:${item.dest}`);
+            await ftpClient.delete(item.dest);
+          }
+          spinner3.info(`Copying File: ${item.src} -> ${item.dest}`);
+          await ftpClient.rcopy(item.src, item.dest);
+        } else {
+          const localFile = import_path3.default.resolve(process3.cwd(), item.src);
+          if (!item.remoteCopy && !import_fs7.default.existsSync(localFile)) {
+            spinner3.warn(`Skip not exists file:${localFile}`);
+            continue;
+          }
+          if (import_fs7.default.lstatSync(localFile).isDirectory()) {
+            spinner3.info(`Uploading Dir: ${localFile} -> ${item.dest}`);
+            await ftpClient.uploadDir(localFile, item.dest);
+          } else {
+            await checkParentDir(ftpClient, item.dest, (dir) => {
+              spinner3.warn(`Create Dir: ${dir}`);
+            });
+            spinner3.info(`Uploading File: ${localFile} -> ${item.dest}`);
+            await ftpClient.put(localFile, item.dest);
+          }
+        }
+      } else {
+        await ftpClient.put(Buffer.from(JSON.stringify(item.src), "utf-8"), item.dest);
+      }
+    }
+    spinner3.succeed("Files uploaded!");
+    await ftpClient.end();
+  } catch (e) {
+    spinner3.fail(`Connection error:${e}`);
+    await ftpClient.end();
+  }
+}
+async function ftpUpload() {
   const releaseJsonFilePath = import_path3.default.join(process3.cwd(), "release.json");
   const packageVersion = getPackageVersion();
   import_consola3.default.info("Package Version:", packageVersion);
@@ -505,68 +563,14 @@ function ftpUpload() {
   const sshConfigFile = import_path3.default.resolve(import_os.default.homedir(), ".ssh/config");
   import_consola3.default.info("SSH Config File Path:", sshConfigFile);
   const sshConfigs = import_ssh_config.default.parse(import_fs7.default.readFileSync(sshConfigFile).toString());
-  let sshConfig = sshConfigs.compute(releaseConfig.ftpConfig.host);
-  if (!sshConfig) {
-    import_consola3.default.error(`SSH config ${releaseConfig.ftpConfig.host} not found`);
-    return;
-  }
-  import_consola3.default.info(sshConfig);
-  import_inquirer3.default.prompt([{ type: "password", name: "password", mask: "*", message: "Enter key pair password" }]).then(async (answer) => {
-    let ftpClient = new import_ssh2_sftp_client.default();
-    const port = sshConfig["Port"];
-    const key = import_fs7.default.readFileSync(import_path3.default.resolve(import_os.default.homedir(), ".ssh/id_rsa"));
-    const spinner3 = (0, import_ora4.default)("Connecting");
-    try {
-      spinner3.start();
-      await ftpClient.connect({
-        host: sshConfig["HostName"],
-        port: port ? parseInt(port) : 22,
-        username: sshConfig["User"],
-        passphrase: answer.password,
-        privateKey: key
-      });
-      releaseConfig.fileMap.sort((it1, it2) => (it1.order ?? 0) - (it2.order ?? 0));
-      for (let item of releaseConfig.fileMap) {
-        if (typeof item.src == "string") {
-          if (item.remoteCopy) {
-            await checkParentDir(ftpClient, item.dest, (dir) => {
-              spinner3.warn(`Create Dir: ${dir}`);
-            });
-            let destExists = await ftpClient.exists(item.dest);
-            if (destExists) {
-              spinner3.warn(`Delete exists file:${item.dest}`);
-              await ftpClient.delete(item.dest);
-            }
-            spinner3.info(`Copying File: ${item.src} -> ${item.dest}`);
-            await ftpClient.rcopy(item.src, item.dest);
-          } else {
-            const localFile = import_path3.default.resolve(process3.cwd(), item.src);
-            if (!item.remoteCopy && !import_fs7.default.existsSync(localFile)) {
-              spinner3.warn(`Skip not exists file:${localFile}`);
-              continue;
-            }
-            if (import_fs7.default.lstatSync(localFile).isDirectory()) {
-              spinner3.info(`Uploading Dir: ${localFile} -> ${item.dest}`);
-              await ftpClient.uploadDir(localFile, item.dest);
-            } else {
-              await checkParentDir(ftpClient, item.dest, (dir) => {
-                spinner3.warn(`Create Dir: ${dir}`);
-              });
-              spinner3.info(`Uploading File: ${localFile} -> ${item.dest}`);
-              await ftpClient.put(localFile, item.dest);
-            }
-          }
-        } else {
-          await ftpClient.put(Buffer.from(JSON.stringify(item.src), "utf-8"), item.dest);
-        }
-      }
-      spinner3.succeed("Files uploaded!");
-      await ftpClient.end();
-    } catch (e) {
-      spinner3.fail(`Connection error:${e}`);
-      await ftpClient.end();
+  for (let host of releaseConfig.ftpConfig.host) {
+    let sshConfig = sshConfigs.compute(host);
+    if (!sshConfig) {
+      import_consola3.default.error(`SSH config ${releaseConfig.ftpConfig.host} not found`);
+      return;
     }
-  });
+    await runSSH(sshConfig, releaseConfig);
+  }
 }
 var import_path3, import_fs7, import_ssh_config, import_os, import_ssh2_sftp_client, import_consola3, import_inquirer3, import_ora4, process3;
 var init_ftp = __esm({
