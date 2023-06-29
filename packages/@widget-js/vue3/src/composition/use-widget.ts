@@ -1,6 +1,7 @@
 import {computed, ComputedRef, ref, Ref} from 'vue-demi'
 import {ElectronUtils, WidgetApiEvent, WidgetData, WidgetDataApi, WidgetParams} from "@widget-js/core";
 import {useAppBroadcast} from "@/composition/use-app-broadcast";
+import {useWindowSize} from "@vueuse/core";
 
 export interface UseWidgetOption<T extends WidgetData> {
   onDataLoaded?: (data?: T) => void,
@@ -103,6 +104,19 @@ export function useWidget<T extends WidgetData>(type: {
   return {widgetParams, widgetData, dataLoaded, sizeStyle}
 }
 
+export function useWidgetSize() {
+  const padding = 12;
+  const paddingFull = padding * 2;
+  const {width: windowWidth, height: windowHeight} = useWindowSize()
+  const width = computed(() => windowWidth.value - paddingFull);
+  const height = computed(() => windowHeight.value - paddingFull);
+  return {
+    windowWidth,
+    windowHeight,
+    width,
+    height
+  }
+}
 
 export function useWidgetScale(width: number, height: number, widgetWidth: number, widgetHeight: number): number {
   if (width >= widgetWidth && height >= widgetHeight) {
