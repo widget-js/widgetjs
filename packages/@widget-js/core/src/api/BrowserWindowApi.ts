@@ -67,9 +67,17 @@ interface IBrowserWindowApi {
 
   getMaximumSize(): Promise<number[]>;
 
+  getMinimumSize(): Promise<number[]>;
+
+  setMaximumSize(width: number, height: number): Promise<void>;
+
+  setMinimumSize(width: number, height: number): Promise<void>;
+
   setZoomLevel(level: number): Promise<void>;
 
   isFocused(): Promise<boolean>;
+
+
 }
 
 type BrowserWindowApiMethods = keyof IBrowserWindowApi;
@@ -77,6 +85,7 @@ type AlignPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | '
 
 interface OpenUrlOptions {
   partition?: string
+  external?: boolean
 }
 
 interface SetPositionOptions {
@@ -247,6 +256,18 @@ export class BrowserWindowApiImpl extends BaseApi<BrowserWindowApiMethods> imple
 
   async isFocused(): Promise<boolean> {
     return this.invokeMethod('isFocused');
+  }
+
+  async setMaximumSize(width: number, height: number): Promise<void> {
+    return this.invokeMethod('setMaximumSize', width, height);
+  }
+
+  async setMinimumSize(width: number, height: number): Promise<void> {
+    return this.invokeMethod('setMinimumSize', width, height);
+  }
+
+  getMinimumSize(): Promise<number[]> {
+    return this.invokeMethod('getMinimumSize');
   }
 
 }
