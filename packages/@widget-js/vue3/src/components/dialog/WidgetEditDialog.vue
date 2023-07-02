@@ -40,8 +40,9 @@
     <template v-slot:footer>
       <el-divider/>
       <el-row justify="end" class="footer">
-        <el-button @click="onCancelClick()">取消</el-button>
-        <el-button type="primary" @click="onConfirmClick">
+        <el-button style="margin-right: auto" @click="onCancelClick()">取消</el-button>
+        <el-button type="info" @click="onApplyClick()">应用</el-button>
+        <el-button type="primary" @click="onConfirmClick()">
           保存
         </el-button>
       </el-row>
@@ -60,47 +61,50 @@ import WidgetFitBox from "@/components/WidgetFitBox.vue";
 import WidgetBaseDialog from "@/components/dialog/WidgetBaseDialog.vue";
 
 export default defineComponent({
-      name: "WidgetEditDialog",
-      components: {WidgetBaseDialog, WidgetFitBox, WidgetSliderField, WidgetDialogTitleBar, WidgetColorField},
-      setup: (props) => {
-        const activeName = ref('custom');
-        const backgroundColor = ref("white")
-        const borderRadius = ref(22)
-        if (!props.option.custom) {
-          if (props.option.isSupportBackgroundSetting()) {
-            activeName.value = "background"
-          }
-        }
-        return {activeName, backgroundColor, borderRadius}
-      },
-      props: {
-        widgetData: {
-          type: Object as PropType<WidgetData>,
-          required: true,
-        },
-        labelWidth: {
-          type: String
-        },
-        widgetParams: {
-          type: WidgetParams,
-          required: true,
-        },
-        option: {
-          type: WidgetConfigOption,
-          required: true,
-        }
-      },
-      emits: ["confirm", "cancel"],
-      methods: {
-        onCancelClick() {
-          this.$emit("cancel")
-          window.close();
-        },
-        onConfirmClick() {
-          this.$emit("confirm")
+    name: "WidgetEditDialog",
+    components: {WidgetBaseDialog, WidgetFitBox, WidgetSliderField, WidgetDialogTitleBar, WidgetColorField},
+    setup: (props) => {
+      const activeName = ref('custom');
+      const backgroundColor = ref("white")
+      const borderRadius = ref(22)
+      if (!props.option.custom) {
+        if (props.option.isSupportBackgroundSetting()) {
+          activeName.value = "background"
         }
       }
+      return {activeName, backgroundColor, borderRadius}
+    },
+    props: {
+      widgetData: {
+        type: Object as PropType<WidgetData>,
+        required: true,
+      },
+      labelWidth: {
+        type: String
+      },
+      widgetParams: {
+        type: WidgetParams,
+        required: true,
+      },
+      option: {
+        type: WidgetConfigOption,
+        required: true,
+      }
+    },
+    emits: ["confirm", "cancel", "apply"],
+    methods: {
+      onCancelClick() {
+        this.$emit("cancel")
+        window.close();
+      },
+      onApplyClick() {
+        this.$emit("apply")
+      },
+      onConfirmClick() {
+        this.$emit("confirm")
+      }
     }
+  }
 );
 
 </script>

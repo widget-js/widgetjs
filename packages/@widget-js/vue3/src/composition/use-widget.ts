@@ -89,6 +89,7 @@ export function useWidget<T extends WidgetData>(type: {
   }
 
   useAppBroadcast([WidgetApiEvent.DATA_CHANGED], (broadcastEvent) => {
+    console.log(broadcastEvent.event)
     if (broadcastEvent.payload.name == widgetParams.name) {
       loadData();
     }

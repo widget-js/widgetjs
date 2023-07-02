@@ -10,6 +10,7 @@ export function useWidgetWrapper(props) {
     wrapper.value?.style.setProperty('--padding', `${props.padding * 2}px`)
     wrapper.value?.style.setProperty('--shadowColor', props.shadowColor)
   }
+
   onMounted(async () => {
     await nextTick()
     updateCssProperty()
