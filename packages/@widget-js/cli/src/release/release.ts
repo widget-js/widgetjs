@@ -49,6 +49,9 @@ const release = async (options: any) => {
   if (!fs.existsSync(installerPath)) {
     installerPath = path.join(`./packaged/electron-${version}-setup-win-x64.exe`)
   }
+  if (!fs.existsSync(installerPath)) {
+    installerPath = path.join(`./packaged/app-${version}-setup-win-x64.exe`)
+  }
   const updateZipPath = path.join(`./packaged/update.zip`)
 
   console.log(chalk.blue('压缩更新文件中'))
