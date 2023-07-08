@@ -9,12 +9,12 @@ const <%= name %>WidgetRoutes = [
     {
         path: url,
         name: `${name}`,
-        component: () => import(/* webpackChunkName: "<%= packageName %>" */ './<%= name %>WidgetView.vue')
+        component: () => import(/* webpackChunkName: "<%= widgetName %>" */ './<%= name %>WidgetView.vue')
     },
     {
         path: configUrl,
         name: `${name}.config`,
-        component: () => import(/* webpackChunkName: "<%= packageName %>.config" */ './<%= name %>ConfigView.vue')
+        component: () => import(/* webpackChunkName: "<%= widgetName %>.config" */ './<%= name %>ConfigView.vue')
     }
 ]
 <% } else { %>
@@ -22,7 +22,7 @@ const <%= name %>WidgetRoutes = [
     {
         path: url,
         name: `${name}`,
-        component: () => import(/* webpackChunkName: "<%= packageName %>" */ './<%= name %>WidgetView.vue')
+        component: () => import(/* webpackChunkName: "<%= widgetName %>" */ './<%= name %>WidgetView.vue')
     }
 ]
 <% }  %>

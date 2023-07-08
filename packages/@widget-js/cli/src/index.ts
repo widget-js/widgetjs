@@ -3,14 +3,11 @@ import fs from "fs";
 import path from "path";
 import * as process from "process";
 
-import {fileURLToPath} from "url";
 import figlet from "figlet";
 import gradient from "gradient-string";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 //
-const packageJsonPath = path.join(__dirname, "../package.json");
+const packageJsonPath = path.join(process.cwd(), "package.json");
 let cliPackage = JSON.parse(fs.readFileSync(packageJsonPath).toString());
 
 console.log(gradient.pastel.multiline(figlet.textSync("widget-cli", {horizontalLayout: "full"})));

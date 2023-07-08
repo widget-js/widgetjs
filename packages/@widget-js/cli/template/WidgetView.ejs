@@ -1,21 +1,14 @@
 <template>
     <!-- TODO:组件页面，这里编写组件业务逻辑-->
-    <<%= paramCaseName  %>-widget :background-color="widgetData.backgroundColor"></<%= paramCaseName  %>-widget>
+    <<%= paramCaseName  %>-widget></<%= paramCaseName  %>-widget>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {WidgetData} from "@widget-js/core";
 import <%= name %>Widget from "./<%= name %>Widget.vue"
 import {useWidget} from "@widget-js/vue3";
 
-export default {
-    name:"<%= name %>WidgetView",
-    components: {<%= name %>Widget},
-    setup(){
-        const {widgetData, widgetParams} = useWidget(WidgetData);
-        return {widgetData, widgetParams};
-    }
-}
+const {widgetData, widgetParams} = useWidget(WidgetData);
 </script>
 
 <style scoped>

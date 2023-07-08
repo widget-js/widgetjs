@@ -1,41 +1,40 @@
 import {Widget, WidgetKeyword} from "@widget-js/core";
 //TODO 修改组件信息，标题，描述，关键词
-const name = "cn.widgetjs.widgets.<%= snakeCaseName%>";
+const name = "<%= widgetName %>";
 //组件标题
-const title = {"zh-CN": "<%= title%>"};
+const title = {"zh-CN": "<%= title %>"};
 //组件描述
 const description = {"zh-CN": ""};
 //组件关键词
 const keywords = [WidgetKeyword.RECOMMEND];
 //组件路由地址
-const url = "/widget/<%= snakeCaseName%>";
+const url = "/widget/<%= snakeCaseName %>";
 //配置页路由地址
-const configUrl = <% if (configurable) { %>"/widget/config/<%= snakeCaseName%>"<% } else { %>undefined<% }  %>;
+const configUrl = <% if (configurable) { %>"/widget/config/<%= snakeCaseName %>"<% } else { %>undefined<% } %>;
 //组件关键词
 const <%= name %>WidgetDefine = new Widget({
-  name: name,
-  title: title,
-  description: description,
-  keywords: keywords,
-  lang: "zh-CN",
-  width: <%= width %>,
-  height: <%= height %>,
-  minWidth: <%= minWidth %>,
-  maxWidth: <%= maxWidth %>,
-  minHeight: <%= minHeight %>,
-  maxHeight: <%= maxHeight %>,
-  routes: [
-    {
-      url: url,
-      name: 'index'
-    },
-<% if (configurable) { %>
-    {
-      url: configUrl,
-      name: 'config'
-    },
-<% }  %>
-  ]
+name: name,
+title: title,
+description: description,
+keywords: keywords,
+lang: "zh-CN",
+width: <%= width %>,
+height: <%= height %>,
+minWidth: <%= minWidth %>,
+maxWidth: <%= maxWidth %>,
+minHeight: <%= minHeight %>,
+maxHeight: <%= maxHeight %>,
+routes: [
+{
+url: url,
+name: 'index'
+},
+<% if (configurable) { %> {
+url: configUrl,
+name: 'config'
+},
+<% } %>
+]
 })
 
 export default <%= name %>WidgetDefine;
