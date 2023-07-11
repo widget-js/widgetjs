@@ -1,5 +1,5 @@
 import scanWidgetPackage from "./scanWidgetPackage";
-import registerWidgetPackage, {scanAndRegister} from "./registerWidgetPackage";
+import {scanAndRegister} from "./registerWidgetPackage";
 import consola from "consola";
 import fs from "fs";
 import path from "path";
@@ -13,6 +13,10 @@ interface ViteWidgetOptions {
    * cn.widgetjs.widgets.countdown.json
    */
   generateFullNamePackage?: boolean
+}
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 const widget = (options?: ViteWidgetOptions) => {
@@ -42,12 +46,32 @@ const widget = (options?: ViteWidgetOptions) => {
   return {
     name: 'vite-plugin-widget',
     async configureServer(_server: ViteDevServer) {
-      _server.httpServer?.once("connection", async () => {
-        if (process.env.NODE_ENV === 'development') {
-          devUrl = _server.resolvedUrls!.local[0];
-          await scanAndRegister({devUrl});
-        }
-      });
+      if (process.env.NODE_ENV === 'development') {
+        _server.httpServer?.once("listening", async () => {
+          let count = 10;
+          while (true) {
+            await delay(1000)
+            count--;
+            if (_server.resolvedUrls) {
+              devUrl = _server.resolvedUrls!.local[0];
+              await scanAndRegister({devUrl});
+              break
+            }
+            if (count < 0) {
+              consola.error("Register widgets failed: fail to get vite dev server url in 10 seconds")
+              break
+            }
+          }
+        })
+      }
+      // 新版不会触发 connection 事件，改用 listening 事件
+      // _server.httpServer?.on("connection", async () => {
+      //   if (process.env.NODE_ENV === 'development') {
+      //     devUrl = _server.resolvedUrls!.local[0];
+      //     await scanAndRegister({devUrl});
+      //     console.log(devUrl)
+      //   }
+      // });
     },
     async configResolved(resolvedConfig: ResolvedConfig) {
       if (resolvedConfig.publicDir) {

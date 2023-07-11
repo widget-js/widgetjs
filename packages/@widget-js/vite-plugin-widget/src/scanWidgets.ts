@@ -1,8 +1,8 @@
 import {Widget} from "@widget-js/core";
+import {transpileCodeString} from "@widget-js/utils";
 import fs from "fs";
 import path from "path";
 import * as process from "process";
-import {transpileCodeString} from "./utils";
 import {glob} from "glob";
 
 async function scanWidgets() {
